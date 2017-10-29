@@ -22,7 +22,7 @@ def change_tile(x_pos, y_pos, new_tile):
 def gen_target():
     target_x, target_y = random.randint(0, 9), random.randint(0, 9)
     while not is_tile_walkable(target_x, target_y) and not is_tile_this(target_x, target_y, 'T') and (
-    target_x, target_y) != server.get_player_grid_pos(1):
+            target_x, target_y) != server.get_player_grid_pos(1):
         target_x, target_y = random.randint(0, 9), random.randint(0, 9)
     change_tile(target_x, target_y, 'T')
     print("Target created at ({}, {})".format(target_x, target_y))

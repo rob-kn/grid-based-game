@@ -32,7 +32,8 @@ def draw_game():
                 pass
     # this draws the player (moving or not)
     pg.draw.rect(conf.screen, conf.WHITE,
-                 pg.Rect(server.get_player_moving_pos(1)[0], server.get_player_moving_pos(1)[1], conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE))
+                 pg.Rect(server.get_player_moving_pos(1)[0], server.get_player_moving_pos(1)[1], conf.GRID_SQUARE_SIZE,
+                         conf.GRID_SQUARE_SIZE))
     # draw score
     score_text = conf.FONT.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
     conf.screen.blit(score_text, (10, 5))

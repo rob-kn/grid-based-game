@@ -1,12 +1,12 @@
 # This simulates the server side of storing the player information.
 
-#pos = (50, 50)
-#grid_pos = (1, 1)
+# pos = (50, 50)
+# grid_pos = (1, 1)
 players_info = {1: {
-                    "moving_pos": (50, 50),
-                    "grid_pos": (1, 1)
-                    }
-                }
+    "moving_pos": (50, 50),
+    "grid_pos": (1, 1)
+}
+}
 
 
 def get_player_moving_pos(player_id):
