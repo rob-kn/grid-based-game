@@ -20,17 +20,12 @@ GRID_DESIGN = ["##########",
                "#        #",
                "##########"]
 SCORE = 0
-
-
-
 done = False
-pos = (50, 50)
 FPS = 60
-grid_pos = (1, 1)
-player_color = (255, 255, 255)
-empty_color = (0, 0, 0)
-wall_color = (0, 0, 200)
-target_color = (200, 0, 0)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
 
 pg.init()
 screen = pg.display.set_mode(WINDOW_SIZE)

@@ -1,8 +1,8 @@
 import pygame as pg
 import random
 import configuration as conf
+import server_sim as server
 import draw_screen as draw_to_screen
-
 
 
 def is_tile_walkable(x_test, y_test):
@@ -21,7 +21,8 @@ def change_tile(x_pos, y_pos, new_tile):
 
 def gen_target():
     target_x, target_y = random.randint(0, 9), random.randint(0, 9)
-    while not is_tile_walkable(target_x, target_y) and not is_tile_this(target_x, target_y, 'T') and (target_x, target_y) != conf.grid_pos:
+    while not is_tile_walkable(target_x, target_y) and not is_tile_this(target_x, target_y, 'T') and (
+    target_x, target_y) != server.get_player_grid_pos(1):
         target_x, target_y = random.randint(0, 9), random.randint(0, 9)
     change_tile(target_x, target_y, 'T')
     print("Target created at ({}, {})".format(target_x, target_y))
@@ -73,7 +74,6 @@ def update_movement(screen_pos, grid_pos):
     return screen_x, screen_y
 
 
-
 gen_target()
 while not conf.done:
     for event in pg.event.get():
@@ -81,9 +81,9 @@ while not conf.done:
             conf.done = True
 
     # INPUT
-    if tuple([i * conf.GRID_SQUARE_SIZE for i in conf.grid_pos]) == conf.pos:
-        conf.grid_pos = update_grid_pos(conf.grid_pos)
-    conf.pos = update_movement(conf.pos, conf.grid_pos)
+    if tuple([i * conf.GRID_SQUARE_SIZE for i in server.get_player_grid_pos(1)]) == server.get_player_moving_pos(1):
+        server.set_player_grid_pos(1, update_grid_pos(server.get_player_grid_pos(1)))
+    server.set_player_moving_pos(1, update_movement(server.get_player_moving_pos(1), server.get_player_grid_pos(1)))
 
     # DRAW
     draw_to_screen.draw_game()
