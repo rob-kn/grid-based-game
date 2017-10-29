@@ -4,14 +4,21 @@ import server_sim as server
 
 
 def draw_camera_view():
+    """
+    This function will draw the current camera view of the game.
+    It draws the relevant tiles only with a small overlap around the game window.
+    It shifts the map by the current offset of the player.
+    The player is always drawn in the center of the map.
+    """
     current_grid_pos = server.get_player_grid_pos(1)
     current_moving_offset = server.get_player_moving_offset(1)
-    print(current_grid_pos)
-    starting_x, starting_y = current_grid_pos[0] - 6, current_grid_pos[1] - 5
-    print("Camera start point", starting_x, starting_y)
+    # starting drawing points are off screen to allow for whichever direction the player is moving
+    starting_x, starting_y = current_grid_pos[0] - conf.CENTER_X, current_grid_pos[1] - conf.CENTER_Y
+    # This blanks the screen
     conf.screen.fill((0, 0, 0))
-    for y, row in enumerate(conf.COMPLETE_GRID[starting_y-1: starting_y+conf.CAMERA_HEIGHT+1]):
-        for x, tile in enumerate(row[starting_x-1: starting_x+conf.CAMERA_WIDTH+1]):
+    # This loop draws the map around the player. It loops through with a 1 tile border.
+    for y, row in enumerate(conf.COMPLETE_GRID[starting_y: starting_y+conf.CAMERA_HEIGHT+2]):
+        for x, tile in enumerate(row[starting_x: starting_x+conf.CAMERA_WIDTH+2]):
             if tile == '#':
                 pg.draw.rect(conf.screen, conf.BLUE,
                              pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
@@ -25,11 +32,11 @@ def draw_camera_view():
                              pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
                                      conf.GRID_SQUARE_SIZE))
 
-    # this draws the player
+    # This draws the player
     pg.draw.rect(conf.screen, conf.WHITE,
                  pg.Rect((conf.CENTER_X-1)*conf.GRID_SQUARE_SIZE, (conf.CENTER_Y-1)*conf.GRID_SQUARE_SIZE,
                          conf.GRID_SQUARE_SIZE,
                          conf.GRID_SQUARE_SIZE))
-    # draw score
+    # This draws the score count
     score_text = conf.FONT.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
     conf.screen.blit(score_text, (10, 5))
