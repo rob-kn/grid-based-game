@@ -43,17 +43,20 @@ def update_grid_pos(old_grid_pos):
     new_grid_x, new_grid_y = old_grid_pos
     pressed = pg.key.get_pressed()
     if pressed[pg.K_UP]:
-        if is_tile_walkable(new_grid_x, new_grid_y - 1):
-            new_grid_y -= 1
+        new_grid_y -= 1
     if pressed[pg.K_DOWN]:
-        if is_tile_walkable(new_grid_x, new_grid_y + 1):
-            new_grid_y += 1
+        new_grid_y += 1
     if pressed[pg.K_LEFT]:
-        if is_tile_walkable(new_grid_x - 1, new_grid_y):
-            new_grid_x -= 1
+        new_grid_x -= 1
     if pressed[pg.K_RIGHT]:
-        if is_tile_walkable(new_grid_x + 1, new_grid_y):
-            new_grid_x += 1
+        new_grid_x += 1
+    if not is_tile_walkable(new_grid_x, new_grid_y):
+        if is_tile_walkable(new_grid_x, old_grid_pos[1]):
+            new_grid_y = old_grid_pos[1]
+        elif is_tile_walkable(old_grid_pos[0], new_grid_y):
+            new_grid_x = old_grid_pos[0]
+        else:
+            new_grid_x, new_grid_y = old_grid_pos
     new_grid_x = min(conf.GRID_WIDTH - 1, max(new_grid_x, 0))
     new_grid_y = min(conf.GRID_HEIGHT - 1, max(new_grid_y, 0))
     new_grid_pos = (new_grid_x, new_grid_y)
