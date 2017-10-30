@@ -20,23 +20,43 @@ def draw_camera_view():
     for y, row in enumerate(conf.COMPLETE_GRID[starting_y: starting_y+conf.CAMERA_HEIGHT+2]):
         for x, tile in enumerate(row[starting_x: starting_x+conf.CAMERA_WIDTH+2]):
             if tile == '#':
-                pg.draw.rect(conf.screen, conf.BLUE,
-                             pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
-                                     conf.GRID_SQUARE_SIZE))
+                # pg.draw.rect(conf.screen, conf.BLUE,
+                #              pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
+                #                      conf.GRID_SQUARE_SIZE))
+                wall_rect = pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
+                                      conf.GRID_SQUARE_SIZE)
+                conf.screen.blit(conf.wall_img, wall_rect)
             elif tile == ' ':
-                pg.draw.rect(conf.screen, conf.BLACK,
-                             pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
-                                     conf.GRID_SQUARE_SIZE))
+                # pg.draw.rect(conf.screen, conf.BLACK,
+                #              pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
+                #                      conf.GRID_SQUARE_SIZE))
+                floor_rect = pg.Rect(((x - 1) * conf.GRID_SQUARE_SIZE) + current_moving_offset[0],
+                        ((y - 1) * conf.GRID_SQUARE_SIZE) + current_moving_offset[1], conf.GRID_SQUARE_SIZE,
+                        conf.GRID_SQUARE_SIZE)
+                conf.screen.blit(conf.floor_img, floor_rect)
             elif tile == 'T':
-                pg.draw.rect(conf.screen, conf.RED,
-                             pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
-                                     conf.GRID_SQUARE_SIZE))
+                # pg.draw.rect(conf.screen, conf.RED,
+                #              pg.Rect(((x-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[0], ((y-1) * conf.GRID_SQUARE_SIZE)+current_moving_offset[1], conf.GRID_SQUARE_SIZE,
+                #                      conf.GRID_SQUARE_SIZE))
+                floor_rect = pg.Rect(((x - 1) * conf.GRID_SQUARE_SIZE) + current_moving_offset[0],
+                                     ((y - 1) * conf.GRID_SQUARE_SIZE) + current_moving_offset[1],
+                                     conf.GRID_SQUARE_SIZE,
+                                     conf.GRID_SQUARE_SIZE)
+                conf.screen.blit(conf.floor_img, floor_rect)
+                strawb_rect = pg.Rect(((x - 1) * conf.GRID_SQUARE_SIZE) + current_moving_offset[0],
+                    ((y - 1) * conf.GRID_SQUARE_SIZE) + current_moving_offset[1], conf.GRID_SQUARE_SIZE,
+                    conf.GRID_SQUARE_SIZE)
+                conf.screen.blit(conf.strawb_img, strawb_rect)
 
     # This draws the player
-    pg.draw.rect(conf.screen, conf.WHITE,
-                 pg.Rect((conf.CENTER_X-1)*conf.GRID_SQUARE_SIZE, (conf.CENTER_Y-1)*conf.GRID_SQUARE_SIZE,
-                         conf.GRID_SQUARE_SIZE,
-                         conf.GRID_SQUARE_SIZE))
+    # pg.draw.rect(conf.screen, conf.WHITE,
+    #              pg.Rect((conf.CENTER_X-1)*conf.GRID_SQUARE_SIZE, (conf.CENTER_Y-1)*conf.GRID_SQUARE_SIZE,
+    #                      conf.GRID_SQUARE_SIZE,
+    #                      conf.GRID_SQUARE_SIZE))
+    player_rect = pg.Rect((conf.CENTER_X - 1) * conf.GRID_SQUARE_SIZE, (conf.CENTER_Y - 1) * conf.GRID_SQUARE_SIZE,
+                                  conf.GRID_SQUARE_SIZE,
+                                  conf.GRID_SQUARE_SIZE)
+    conf.screen.blit(conf.player_img, player_rect)
     # This draws the score count
     score_text = conf.FONT.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
     conf.screen.blit(score_text, (10, 5))

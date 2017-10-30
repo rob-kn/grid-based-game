@@ -3,7 +3,7 @@
 # grid_pos - a position for the player in the grid
 # moving offset - offset that player has moved so far
 players_info = {1: {
-    "grid_pos": (14, 14),
+    "grid_pos": (45, 9),
     "moving_offset": (0, 0)
 }
 }

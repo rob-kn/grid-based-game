@@ -13,6 +13,7 @@ def is_tile_this(x_test, y_test, test_tile):
     return True if conf.COMPLETE_GRID[y_test][x_test] == test_tile else False
 
 
+# TODO: map should never be changed. Tiles should be an instance of a Tile class. (Create this)
 def change_tile(x_pos, y_pos, new_tile):
     lst_row = list(conf.COMPLETE_GRID[y_pos])
     lst_row[x_pos] = new_tile
@@ -69,21 +70,23 @@ def update_offset(player_id, new_grid_pos, old_grid_pos):
     new_offset_y = -conf.GRID_SQUARE_SIZE if new_grid_pos[1] < old_grid_pos[1] else new_offset_y
     new_offset_y = +conf.GRID_SQUARE_SIZE if new_grid_pos[1] > old_grid_pos[1] else new_offset_y
     server.set_player_moving_offset(player_id, (new_offset_x, new_offset_y))
-    # print(new_offset_x, new_offset_y)
 
 
 def reduce_offset(player_id):
     # gets current offset and converges it to zero.
     # TODO: Offsets can be stored locally (not from server)
+    # TODO: Currently player will move slower is grid blocks are bigger (needs adjusting to variables)
     current_offset_x, current_offset_y = server.get_player_moving_offset(1)
+    if -4 < current_offset_x < 4 and -4 < current_offset_y < 4:
+        current_offset_x, current_offset_y = 0, 0
     if current_offset_x > 0:
-        current_offset_x -= 2
+        current_offset_x -= 4
     if current_offset_x < 0:
-        current_offset_x += 2
+        current_offset_x += 4
     if current_offset_y > 0:
-        current_offset_y -= 2
+        current_offset_y -= 4
     if current_offset_y < 0:
-        current_offset_y += 2
+        current_offset_y += 4
     server.set_player_moving_offset(1, (current_offset_x, current_offset_y))
     print(current_offset_x, current_offset_y) if current_offset_x != 0 or current_offset_y != 0 else None
 
