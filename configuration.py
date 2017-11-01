@@ -28,10 +28,16 @@ FONT = pg.font.Font('amatic/Amatic-Bold.ttf', 32)
 # Graphics
 wall_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-dngn/wall/brick_dark0.png")
 wall_img = pg.transform.scale(wall_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-player_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/transform/dragon_form.png")
+player_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/deep_troll.png")
 player_img = pg.transform.scale(player_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 floor_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/tomb0.png")
 floor_img = pg.transform.scale(floor_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 strawb_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/item/food/strawberry.png")
 strawb_img = pg.transform.scale(strawb_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+giant_eye_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png")
+giant_eye_img = pg.transform.scale(giant_eye_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
+# Enemy information
+enemy_types = {"giant_eye": {"health": 100,
+                             "attack": 20,
+                             "img": giant_eye_img}}

@@ -25,7 +25,7 @@ def gen_target():
 
     while not is_tile_walkable(target_x, target_y) \
             and not is_tile_this(target_x, target_y, 'T') \
-            and (target_x, target_y) != server.get_player_grid_pos(1):
+            and (target_x, target_y) != (player.x, player.y):
         target_x, target_y = random.randint(0, conf.GRID_WIDTH - 1), random.randint(0, conf.GRID_HEIGHT - 1)
     change_tile(target_x, target_y, 'T')
     print("Target created at ({}, {})".format(target_x, target_y))
@@ -60,52 +60,25 @@ def update_grid_pos(old_grid_pos):
     new_grid_x = min(conf.GRID_WIDTH - 1, max(new_grid_x, 0))
     new_grid_y = min(conf.GRID_HEIGHT - 1, max(new_grid_y, 0))
     new_grid_pos = (new_grid_x, new_grid_y)
-    update_offset(1, new_grid_pos, old_grid_pos)
+    player.reset_offset(new_grid_pos, old_grid_pos)
     change_targets(old_grid_pos)
     return new_grid_pos
 
 
-def update_offset(player_id, new_grid_pos, old_grid_pos):
-    new_offset_x = 0
-    new_offset_y = 0
-    new_offset_x = -conf.GRID_SQUARE_SIZE if new_grid_pos[0] < old_grid_pos[0] else new_offset_x
-    new_offset_x = +conf.GRID_SQUARE_SIZE if new_grid_pos[0] > old_grid_pos[0] else new_offset_x
-    new_offset_y = -conf.GRID_SQUARE_SIZE if new_grid_pos[1] < old_grid_pos[1] else new_offset_y
-    new_offset_y = +conf.GRID_SQUARE_SIZE if new_grid_pos[1] > old_grid_pos[1] else new_offset_y
-    server.set_player_moving_offset(player_id, (new_offset_x, new_offset_y))
-
-
-def reduce_offset(player_id):
-    # gets current offset and converges it to zero.
-    # TODO: Offsets can be stored locally (not from server)
-    # TODO: Currently player will move slower is grid blocks are bigger (needs adjusting to variables)
-    current_offset_x, current_offset_y = server.get_player_moving_offset(1)
-    if -4 < current_offset_x < 4 and -4 < current_offset_y < 4:
-        current_offset_x, current_offset_y = 0, 0
-    if current_offset_x > 0:
-        current_offset_x -= 4
-    if current_offset_x < 0:
-        current_offset_x += 4
-    if current_offset_y > 0:
-        current_offset_y -= 4
-    if current_offset_y < 0:
-        current_offset_y += 4
-    server.set_player_moving_offset(1, (current_offset_x, current_offset_y))
-    print(current_offset_x, current_offset_y) if current_offset_x != 0 or current_offset_y != 0 else None
-
-
-gen_target()
+#gen_target()
 while not conf.done:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             conf.done = True
 
     # INPUT
-    if server.get_player_moving_offset(1) == (0, 0):
-        server.set_player_grid_pos(1, update_grid_pos(server.get_player_grid_pos(1)))
-    reduce_offset(1)
+    player = server.get_player()
+    if player.offset == (0, 0):
+        player.x, player.y = update_grid_pos((player.x, player.y))
+    player.reduce_offset()
+    server.set_player(player)
     # DRAW
-    draw_to_screen.draw_camera_view()
+    draw_to_screen.draw_camera_view(player)
 
     # UPDATE
     pg.display.flip()
