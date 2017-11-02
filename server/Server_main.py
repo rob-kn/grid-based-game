@@ -4,14 +4,8 @@ from server import Player
 from server import Enemy
 import random
 
-player1 = Player.Player(1, 45, 9)
-
-# enemy1 = Enemy.Enemy(47, 9, "giant_eye")
-# enemy2 = Enemy.Enemy(46, 9, "giant_eye")
-
 
 def is_tile_walkable(x_test, y_test):
-    print(x_test, y_test)
     is_walkable = True
     if conf.COMPLETE_GRID[y_test][x_test] != ' ':
         is_walkable = False
@@ -57,9 +51,11 @@ def get_free_tiles(center_x, center_y):
     return free_tiles
 
 
+player1 = Player.Player(1, 45, 9)
+# Creates 15 randomly places enemies.
 for i in range(15):
     x, y = random.randint(0, 80), random.randint(0, 20)
     while not is_tile_walkable(x, y):
         x, y = random.randint(0, 80), random.randint(0, 20)
-    enemy = Enemy.Enemy(x, y, "giant_eye")
+    temp_enemy = Enemy.Enemy(x, y, "giant_eye")
 
