@@ -59,7 +59,7 @@ def detect_events():
             print(grid_x, grid_y)
             for sprite in sprites:
                 if sprite.x == grid_x and sprite.y == grid_y:
-                    player.target = sprite.sprite_id
+                    player.target = sprite.sprite_id if player.target != sprite.sprite_id else None
         if event.type == pg.MOUSEBUTTONUP:
             print(pg.mouse.get_pos())
 
@@ -74,6 +74,7 @@ while not conf.done:
     y_range = range(player.y - (camera.center_to_yedge + 2), player.y + (camera.center_to_yedge + 2))
     sprites = server.get_sprites_around_xy(x_range, y_range)
     server.update_sprites()
+
     if player.offset == (0, 0):
         player.x, player.y = update_grid_pos((player.x, player.y))
     player.reduce_offset()

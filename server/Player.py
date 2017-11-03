@@ -13,6 +13,6 @@ class Player(Sprite):
         self.speed = 5 # 8=8 frames per tile, 4=16f/t, 2=32f/t, 1=64f/t
         self.attack = 5
         self.sprite_type = "Player"
-        self.target = 7
+        self.target = None
         self.image = conf.player_img
         super(Player, self).__init__(player_id, starting_x, starting_y)

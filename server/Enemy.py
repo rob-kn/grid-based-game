@@ -6,7 +6,8 @@ enemy_types = {"giant_eye": {"max_health": 100,
                              "attack": 20,
                              "speed": 1.5,
                              "name": "Giant Eye",
-                             "img": conf.giant_eye_img}}
+                             "img": conf.giant_eye_img,
+                             "range": 0}}
 enemies = []
 
 

@@ -28,35 +28,35 @@ def set_player(p):
     player1 = p
 
 
-def get_enemies():
-    for enemy in Enemy.enemies:
-        if enemy.offset == (0, 0):
-            free_tiles = get_free_tiles(enemy.x, enemy.y)
-            if free_tiles:
-                x_change, y_change = random.choice(free_tiles)
-            else:
-                x_change, y_change = 0, 0
-            enemy.reset_offset((enemy.x + x_change, enemy.y + y_change), (enemy.x, enemy.y))
-            enemy.x = enemy.x + x_change
-            enemy.y = enemy.y + y_change
-        enemy.reduce_offset()
-    return Enemy.enemies
-
-
-def get_free_tiles(center_x, center_y):
+def get_free_sides(center_x, center_y):
     free_tiles = []
-    for x in range(-1, 2):
-        for y in range(-1, 2):
-            if is_tile_walkable(center_x + x, center_y + y):
-                free_tiles.append((x, y))
+    for xy in [(center_x-1, center_y),
+               (center_x+1, center_y),
+               (center_x, center_y+1),
+               (center_x, center_y-1)]:
+        if is_tile_walkable(xy[0], xy[1]):
+            free_tiles.append((xy[0]-center_x, xy[1]-center_y))
+    return free_tiles
+
+
+def get_free_corners(center_x, center_y):
+    free_tiles = []
+    for xy in [(center_x-1, center_y-1),
+               (center_x+1, center_y-1),
+               (center_x-1, center_y+1),
+               (center_x+1, center_y+1)]:
+        if is_tile_walkable(xy[0], xy[1]):
+            free_tiles.append((xy[0]-center_x, xy[1]-center_y))
     return free_tiles
 
 
 def apply_random_movement(sprite):
     if sprite.offset == (0, 0):
-        free_tiles = get_free_tiles(sprite.x, sprite.y)
+        free_tiles = get_free_sides(sprite.x, sprite.y)
         if free_tiles:
             x_change, y_change = random.choice(free_tiles)
+        elif get_free_corners(sprite.x, sprite.y):
+            x_change, y_change = random.choice(get_free_corners(sprite.x, sprite.y))
         else:
             x_change, y_change = 0, 0
         sprite.reset_offset((sprite.x + x_change, sprite.y + y_change), (sprite.x, sprite.y))
