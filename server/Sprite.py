@@ -1,6 +1,6 @@
 import configuration as conf
 
-sprites = []
+sprites = {}
 
 
 class Sprite:
@@ -11,7 +11,7 @@ class Sprite:
         self.x = starting_x
         self.y = starting_y
         self.map_level = 0
-        sprites.append(self)
+        sprites[self.sprite_id] = self
 
     def reset_offset(self, new_grid_pos, old_grid_pos):
         """Sets the appropriate offset when given an updated position in the grid."""

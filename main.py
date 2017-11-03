@@ -1,4 +1,5 @@
 import pygame as pg
+from time import time
 
 import configuration as conf
 import Rendering as render
@@ -11,7 +12,7 @@ def is_tile_walkable(x_test, y_test):
         is_walkable = False
     if (x_test, y_test) == (player.x, player.y):
         is_walkable = False
-    for sprite in sprites:
+    for sprite in sprites.values():
         if (sprite.x, sprite.y) == (x_test, y_test):
             is_walkable = False
     return is_walkable
@@ -57,7 +58,7 @@ def detect_events():
             grid_x = rel_x_pos + player.x
             grid_y = rel_y_pos + player.y
             print(grid_x, grid_y)
-            for sprite in sprites:
+            for sprite in sprites.values():
                 if sprite.x == grid_x and sprite.y == grid_y:
                     player.target = sprite.sprite_id if player.target != sprite.sprite_id else None
         if event.type == pg.MOUSEBUTTONUP:
@@ -74,6 +75,7 @@ while not conf.done:
     y_range = range(player.y - (camera.center_to_yedge + 2), player.y + (camera.center_to_yedge + 2))
     sprites = server.get_sprites_around_xy(x_range, y_range)
     server.update_sprites()
+    server.attack_sprites()
 
     if player.offset == (0, 0):
         player.x, player.y = update_grid_pos((player.x, player.y))

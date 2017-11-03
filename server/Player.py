@@ -1,8 +1,5 @@
 import configuration as conf
-import math
 from server.Sprite import Sprite
-#
-# sorted(lst, key=lambda i: (i.x, i.y))
 
 
 class Player(Sprite):
@@ -11,7 +8,9 @@ class Player(Sprite):
         self.max_health = 100
         self.health = 100
         self.speed = 5 # 8=8 frames per tile, 4=16f/t, 2=32f/t, 1=64f/t
-        self.attack = 5
+        self.attack = 3
+        self.attack_speed = 1
+        self.range = 1
         self.sprite_type = "Player"
         self.target = None
         self.image = conf.player_img

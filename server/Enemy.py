@@ -4,7 +4,7 @@ from server.Sprite import Sprite
 
 enemy_types = {"giant_eye": {"max_health": 100,
                              "attack": 20,
-                             "speed": 1.5,
+                             "speed": 1.2,
                              "name": "Giant Eye",
                              "img": conf.giant_eye_img,
                              "range": 0}}

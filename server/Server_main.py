@@ -4,6 +4,7 @@ from server import Player
 from server import Enemy
 from server import Sprite
 import random
+from time import time
 
 
 def is_tile_walkable(x_test, y_test):
@@ -12,7 +13,7 @@ def is_tile_walkable(x_test, y_test):
         is_walkable = False
     if (x_test, y_test) == (player1.x, player1.y):
         is_walkable = False
-    for sprite in Sprite.sprites:
+    for sprite in Sprite.sprites.values():
         if (sprite.x, sprite.y) == (x_test, y_test):
             is_walkable = False
     return is_walkable
@@ -66,19 +67,34 @@ def apply_random_movement(sprite):
 
 
 def update_sprites():
-    for sprite in Sprite.sprites:
+    for sprite_id, sprite in Sprite.sprites.items():
         if sprite.sprite_type == "Enemy":
             apply_random_movement(sprite)
+        if sprite.health <= 0:
+            pass
+
+
+def attack_sprites():
+    global last_attack_time
+    if time() - last_attack_time > player1.attack_speed:
+        for sprite in Sprite.sprites.values():
+            if sprite.sprite_id == player1.target:
+                for x_change in range(-1, player1.range + 1):
+                    for y_change in range(-1, player1.range + 1):
+                        if player1.x + x_change == sprite.x and player1.y + y_change:
+                            sprite.health -= player1.attack
+        last_attack_time = time()
 
 
 def get_sprites_around_xy(x_range, y_range):
-    sprites_in_range = []
-    for sprite in Sprite.sprites:
+    sprites_in_range = {}
+    for sprite_id, sprite in Sprite.sprites.items():
         if sprite.x in x_range and sprite.y in y_range:
-            sprites_in_range.append(sprite)
+            sprites_in_range[sprite_id] = sprite
     return sprites_in_range
 
 
+last_attack_time = time()
 id_counter = 0
 
 player1 = Player.Player(id_counter, "Player", 45, 9)
