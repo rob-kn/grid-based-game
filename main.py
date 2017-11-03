@@ -11,8 +11,8 @@ def is_tile_walkable(x_test, y_test):
         is_walkable = False
     if (x_test, y_test) == (player.x, player.y):
         is_walkable = False
-    for enemy in enemies:
-        if (enemy.x, enemy.y) == (x_test, y_test):
+    for sprite in sprites:
+        if (sprite.x, sprite.y) == (x_test, y_test):
             is_walkable = False
     return is_walkable
 
@@ -52,7 +52,8 @@ while not conf.done:
 
     # INPUT
     player = server.get_player()
-    enemies = server.get_enemies()
+    sprites = server.get_sprites_around_xy(player.x, player.y, range(100), range(100))
+    server.update_sprites()
     if player.offset == (0, 0):
         player.x, player.y = update_grid_pos((player.x, player.y))
     player.reduce_offset()
@@ -60,8 +61,7 @@ while not conf.done:
 
     # DRAW
     camera.draw_camera_map(player.x, player.y, player)
-    camera.draw_entities(enemies)
-    camera.draw_player()
+    camera.draw_entities(sprites)
     overlay.draw_overlay()
     # UPDATE
     pg.display.flip()

@@ -1,15 +1,17 @@
 import configuration as conf
 
+sprites = []
+
 
 class Sprite:
     def __init__(self, sprite_id, starting_x, starting_y):
         self.sprite_id = sprite_id
-        self.speed = 5  # 8=8 frames per tile, 4=16f/t, 2=32f/t, 1=64f/t
         self.offset = (0, 0)
         self.offset_float = (0.0, 0.0)
         self.x = starting_x
         self.y = starting_y
         self.map_level = 0
+        sprites.append(self)
 
     def reset_offset(self, new_grid_pos, old_grid_pos):
         """Sets the appropriate offset when given an updated position in the grid."""
