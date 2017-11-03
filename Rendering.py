@@ -15,18 +15,20 @@ class Camera:
                        ' ': conf.floor_img}
         self.player = None
 
-    def draw_camera_map(self, grid_x, grid_y, offset):
+    def draw_camera_map(self, grid_x, grid_y, player):
         """
         Draws the map in the area around the player (or whatever x and y are given).
         Uses te offset value to shift the map to account for player movement.
         """
+        self.player = player
         conf.screen.fill((0, 0, 0))
         range_x, range_y = self.get_onscreen_range(grid_x, grid_y)
         for col_count, y in enumerate(range_y):
             y_pixel = (col_count-1) * conf.GRID_SQUARE_SIZE
             for row_count, x in enumerate(range_x):
                 x_pixel = (row_count-1) * conf.GRID_SQUARE_SIZE
-                rect = pg.Rect(x_pixel + offset[0], y_pixel + offset[1], conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
+                rect = pg.Rect(x_pixel + self.player.offset[0],
+                               y_pixel + self.player.offset[1], conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
                 conf.screen.blit(self.images[self.map[y][x]], rect)
 
     def get_onscreen_range(self, grid_x, grid_y):
@@ -37,15 +39,6 @@ class Camera:
         range_x = range(grid_x - (self.center_to_xedge + 1), grid_x + (self.center_to_xedge + 1) + 1)
         range_y = range(grid_y - (self.center_to_yedge + 1), grid_y + (self.center_to_yedge + 1) + 1)
         return range_x, range_y
-
-    def draw_player(self, player):
-        """
-        Draws the player in the center of the screen.
-        """
-        self.player = player
-        rect = pg.Rect((self.center_x - 1)*conf.GRID_SQUARE_SIZE, (self.center_y-1)*conf.GRID_SQUARE_SIZE,
-                       conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
-        conf.screen.blit(conf.player_img, rect)
 
     def draw_entities(self, entities):
         """
@@ -59,8 +52,38 @@ class Camera:
                            conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
             conf.screen.blit(entity.image, rect)
 
+    def draw_player(self):
+        """
+        Draws the player in the center of the screen.
+        """
+        x_pixel = (self.center_x - 1)*conf.GRID_SQUARE_SIZE
+        y_pixel = (self.center_y-1)*conf.GRID_SQUARE_SIZE
+        rect = pg.Rect(x_pixel, y_pixel,
+                       conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
+        conf.screen.blit(conf.player_img, rect)
+
+        # TODO Abstract as seperate function
+        name_text = conf.NAMES_FONT.render(self.player.player_name, 1, (255, 255, 255))
+        text_width = name_text.get_rect().width
+        text_spacing = (conf.GRID_SQUARE_SIZE - text_width) / 2
+        conf.screen.blit(name_text, (x_pixel + text_spacing, y_pixel - 20))
+
+        # TODO Abstract as seperate function
+        health_percent = self.player.health / self.player.max_health
+        health_pixels = int(health_percent * conf.GRID_SQUARE_SIZE)
+        hp_bar_color = conf.GREEN
+        if health_percent < 0.6:
+            hp_bar_color = conf.YELLOW
+        if health_percent < 0.3:
+            hp_bar_color = conf.RED
+        pg.draw.rect(conf.screen, hp_bar_color, (x_pixel, y_pixel - 10, health_pixels, 5), 0)
+
+
+class Overlay:
+    def __init__(self):
+        self.font = conf.FONT
+
     def draw_overlay(self):
-        # TODO can be own class where fonts / overlap images are stored
-        score_text = conf.FONT.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
+        score_text = self.font.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
         conf.screen.blit(score_text, (10, 5))
 

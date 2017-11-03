@@ -51,11 +51,11 @@ def get_free_tiles(center_x, center_y):
     return free_tiles
 
 
-player1 = Player.Player(1, 45, 9)
+player1 = Player.Player("Player", 1, 45, 9)
 # Creates 15 randomly places enemies.
 for i in range(15):
     x, y = random.randint(0, 80), random.randint(0, 20)
     while not is_tile_walkable(x, y):
         x, y = random.randint(0, 80), random.randint(0, 20)
-    temp_enemy = Enemy.Enemy(x, y, "giant_eye")
+    temp_enemy = Enemy.Enemy(1, x, y, "giant_eye")
 

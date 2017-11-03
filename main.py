@@ -1,7 +1,7 @@
 import pygame as pg
 
 import configuration as conf
-import draw_screen as draw_to_screen
+import Rendering as render
 from server import Server_main as server
 
 
@@ -43,7 +43,8 @@ def update_grid_pos(old_grid_pos):
     return new_grid_pos
 
 
-camera = draw_to_screen.Camera(11, 13)
+camera = render.Camera(11, 13)
+overlay = render.Overlay()
 while not conf.done:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -58,10 +59,10 @@ while not conf.done:
     server.set_player(player)
 
     # DRAW
-    camera.draw_camera_map(player.x, player.y, player.offset)
-    camera.draw_player(player)
+    camera.draw_camera_map(player.x, player.y, player)
     camera.draw_entities(enemies)
-    camera.draw_overlay()
+    camera.draw_player()
+    overlay.draw_overlay()
     # UPDATE
     pg.display.flip()
     conf.clock.tick(conf.FPS)

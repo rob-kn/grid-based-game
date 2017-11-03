@@ -1,26 +1,15 @@
 import configuration as conf
 
-enemy_types = {"giant_eye": {"max_health": 100,
-                             "attack": 20,
-                             "speed": 5,
-                             "img": conf.giant_eye_img}}
-enemies = []
 
-
-class Enemy:
-    def __init__(self, enemy_id, starting_x, starting_y, type):
-        self.enemy_id = enemy_id
-        self.max_health = 100
-        self.health = 100
-        self.attack = 5
-        self.speed = 3.5
+class Sprite:
+    def __init__(self, sprite_id, starting_x, starting_y):
+        self.sprite_id = sprite_id
+        self.speed = 5  # 8=8 frames per tile, 4=16f/t, 2=32f/t, 1=64f/t
         self.offset = (0, 0)
         self.offset_float = (0.0, 0.0)
         self.x = starting_x
         self.y = starting_y
         self.map_level = 0
-        self.image = enemy_types[type]["img"]
-        enemies.append(self)
 
     def reset_offset(self, new_grid_pos, old_grid_pos):
         """Sets the appropriate offset when given an updated position in the grid."""
@@ -36,7 +25,7 @@ class Enemy:
     def reduce_offset(self):
         """
         Converges current offset to zero. Updates a float version to allow for varying speeds.
-        If the movement is diagonal, the enemy moves twice as slow.
+        If the movement is diagonal, the player moves twice as slow.
         """
         current_offset_x, current_offset_y = self.offset_float
         if -self.speed < current_offset_x < self.speed and -self.speed < current_offset_y < self.speed:
@@ -55,3 +44,5 @@ class Enemy:
             change_y /= 2
         self.offset = (int(current_offset_x + change_x), int(current_offset_y + change_y))
         self.offset_float = (current_offset_x + change_x, current_offset_y + change_y)
+
+

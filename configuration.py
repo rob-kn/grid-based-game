@@ -18,11 +18,13 @@ BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+YELLOW = (255,255,0)
 
 pg.init()
 screen = pg.display.set_mode(SCREEN_SIZE)
 clock = pg.time.Clock()
 FONT = pg.font.Font('amatic/Amatic-Bold.ttf', 32)
+NAMES_FONT = pg.font.Font(None, 16)
 
 # Graphics
 wall_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-dngn/wall/brick_dark0.png")
