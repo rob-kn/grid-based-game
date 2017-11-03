@@ -67,11 +67,14 @@ def apply_random_movement(sprite):
 
 
 def update_sprites():
+    ids_to_remove = []
     for sprite_id, sprite in Sprite.sprites.items():
         if sprite.sprite_type == "Enemy":
             apply_random_movement(sprite)
         if sprite.health <= 0:
-            pass
+            ids_to_remove.append(sprite_id)
+    if ids_to_remove:
+        Sprite.sprites = {key: value for key, value in Sprite.sprites.items() if key not in ids_to_remove}
 
 
 def attack_sprites():
