@@ -71,7 +71,7 @@ def update_sprites():
             apply_random_movement(sprite)
 
 
-def get_sprites_around_xy(center_x, center_y, x_range, y_range):
+def get_sprites_around_xy(x_range, y_range):
     sprites_in_range = []
     for sprite in Sprite.sprites:
         if sprite.x in x_range and sprite.y in y_range:
@@ -79,13 +79,17 @@ def get_sprites_around_xy(center_x, center_y, x_range, y_range):
     return sprites_in_range
 
 
+id_counter = 0
 
-player1 = Player.Player("Player", 1, 45, 9)
+player1 = Player.Player(id_counter, "Player", 45, 9)
+id_counter += 1
 # Creates 15 randomly places enemies.
+
 for i in range(15):
     x, y = random.randint(0, 80), random.randint(0, 20)
     while not is_tile_walkable(x, y):
         x, y = random.randint(0, 80), random.randint(0, 20)
-    temp_enemy = Enemy.Enemy(1, x, y, "giant_eye")
+    temp_enemy = Enemy.Enemy(id_counter, x, y, "giant_eye")
+    id_counter += 1
 
 

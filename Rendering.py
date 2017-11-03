@@ -54,6 +54,8 @@ class Camera:
             conf.screen.blit(sprite.image, rect)
             self.draw_sprite_name(x_pixel, y_pixel, sprite.name)
             self.draw_sprite_health_bar(x_pixel, y_pixel, sprite.health, sprite.max_health)
+            if sprite.sprite_id == self.player.target:
+                pg.draw.rect(conf.screen, conf.RED, (x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE), 3)
 
     def draw_sprite_name(self, x, y, name):
         name_text = conf.NAMES_FONT.render(name, 1, (255, 255, 255))

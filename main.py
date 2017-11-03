@@ -36,27 +36,51 @@ def update_grid_pos(old_grid_pos):
             new_grid_x = old_grid_pos[0]
         else:
             new_grid_x, new_grid_y = old_grid_pos
-    new_grid_x = min(conf.GRID_WIDTH - 1, max(new_grid_x, 0))
-    new_grid_y = min(conf.GRID_HEIGHT - 1, max(new_grid_y, 0))
     new_grid_pos = (new_grid_x, new_grid_y)
     player.reset_offset(new_grid_pos, old_grid_pos)
     return new_grid_pos
 
 
-camera = render.Camera(11, 13)
-overlay = render.Overlay()
-while not conf.done:
+def detect_events():
     for event in pg.event.get():
         if event.type == pg.QUIT:
             conf.done = True
+        if event.type == pg.MOUSEBUTTONDOWN:
+            x_pixel, y_pixel = pg.mouse.get_pos()
+            print(x_pixel, y_pixel)
+            x_pos = int(x_pixel / conf.GRID_SQUARE_SIZE) + 1
+            y_pos = int(y_pixel / conf.GRID_SQUARE_SIZE) + 1
+            print(x_pos, y_pos)
+            rel_x_pos = x_pos - camera.center_x
+            rel_y_pos = y_pos - camera.center_y
+            print(rel_x_pos, rel_y_pos)
+            grid_x = rel_x_pos + player.x
+            grid_y = rel_y_pos + player.y
+            print(grid_x, grid_y)
+            for sprite in sprites:
+                if sprite.x == grid_x and sprite.y == grid_y:
+                    player.target = sprite.sprite_id
+        if event.type == pg.MOUSEBUTTONUP:
+            print(pg.mouse.get_pos())
+
+
+camera = render.Camera(11, 13)
+overlay = render.Overlay()
+while not conf.done:
 
     # INPUT
     player = server.get_player()
-    sprites = server.get_sprites_around_xy(player.x, player.y, range(100), range(100))
+    x_range = range(player.x - (camera.center_to_xedge + 2), player.x + (camera.center_to_xedge + 2))
+    y_range = range(player.y - (camera.center_to_yedge + 2), player.y + (camera.center_to_yedge + 2))
+    sprites = server.get_sprites_around_xy(x_range, y_range)
     server.update_sprites()
     if player.offset == (0, 0):
         player.x, player.y = update_grid_pos((player.x, player.y))
     player.reduce_offset()
+
+    detect_events()
+
+    # Update player
     server.set_player(player)
 
     # DRAW
