@@ -3,9 +3,11 @@ import configuration as conf
 
 
 class Camera:
-    def __init__(self, height, width):
-        self.height = height
-        self.width = width
+    def __init__(self):
+        self.height = conf.CAMERA_HEIGHT
+        self.width = conf.CAMERA_WIDTH
+        self.camera_startx = conf.CAMERA_STARTX
+        self.camera_starty = conf.CAMERA_STARTY
         self.center_to_xedge = int((self.width - 1) / 2)     # 5
         self.center_to_yedge = int((self.height - 1) / 2)    # 6
         self.center_x = self.width - self.center_to_xedge
@@ -24,11 +26,12 @@ class Camera:
         conf.screen.fill((0, 0, 0))
         range_x, range_y = self.get_onscreen_range(grid_x, grid_y)
         for col_count, y in enumerate(range_y):
-            y_pixel = (col_count-1) * conf.GRID_SQUARE_SIZE
+            y_pixel = (col_count-1) * conf.GRID_SQUARE_SIZE + self.player.offset[1]
+            y_pixel += self.camera_starty
             for row_count, x in enumerate(range_x):
-                x_pixel = (row_count-1) * conf.GRID_SQUARE_SIZE
-                rect = pg.Rect(x_pixel + self.player.offset[0],
-                               y_pixel + self.player.offset[1], conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
+                x_pixel = (row_count-1) * conf.GRID_SQUARE_SIZE + self.player.offset[0]
+                x_pixel += self.camera_startx
+                rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
                 conf.screen.blit(self.images[self.map[y][x]], rect)
 
     def get_onscreen_range(self, grid_x, grid_y):
@@ -50,6 +53,8 @@ class Camera:
             y_pixel = (((sprite.y - self.player.y) + self.center_y) - 1) * conf.GRID_SQUARE_SIZE
             x_pixel = x_pixel + self.player.offset[0] - sprite.offset[0]
             y_pixel = y_pixel + self.player.offset[1] - sprite.offset[1]
+            x_pixel += self.camera_startx
+            y_pixel += self.camera_starty
             rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
             for layer in sprite.images:
                 conf.screen.blit(layer, rect)
@@ -78,8 +83,22 @@ class Camera:
 class Overlay:
     def __init__(self):
         self.font = conf.FONT
+        self.left_pane_width = conf.LEFT_PANE_WIDTH
+        self.left_pane_startx = conf.LEFT_PANE_STARTX
+        self.left_pane_starty = conf.LEFT_PANE_STARTY
+        self.right_pane_width = conf.RIGHT_PANE_WIDTH
+        self.right_pane_startx = conf.RIGHT_PANE_STARTX
+        self.right_pane_starty = conf.RIGHT_PANE_STARTY
 
     def draw_overlay(self):
         score_text = self.font.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
         conf.screen.blit(score_text, (10, 5))
+
+    def draw_left_pane(self):
+        pg.draw.rect(conf.screen, conf.SILVER, (self.left_pane_startx, self.left_pane_starty,
+                                                self.left_pane_width, conf.SCREEN_HEIGHT), 0)
+
+    def draw_right_pane(self):
+        pg.draw.rect(conf.screen, conf.SILVER, (self.right_pane_startx, self.right_pane_starty,
+                                                self.right_pane_width, conf.SCREEN_HEIGHT), 0)
 

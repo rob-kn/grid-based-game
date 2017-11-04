@@ -65,7 +65,7 @@ def detect_events():
             print(pg.mouse.get_pos())
 
 
-camera = render.Camera(11, 13)
+camera = render.Camera()
 overlay = render.Overlay()
 while not conf.done:
 
@@ -90,6 +90,8 @@ while not conf.done:
     camera.draw_camera_map(player.x, player.y, player)
     camera.draw_entities(sprites)
     overlay.draw_overlay()
+    overlay.draw_left_pane()
+    overlay.draw_right_pane()
     # UPDATE
     pg.display.flip()
     conf.clock.tick(conf.FPS)
