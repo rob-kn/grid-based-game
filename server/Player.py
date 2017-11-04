@@ -13,5 +13,5 @@ class Player(Sprite):
         self.range = 1
         self.sprite_type = "Player"
         self.target = None
-        self.image = conf.player_img
+        self.images = [conf.player_img, conf.player_legs, conf.player_body]
         super(Player, self).__init__(player_id, starting_x, starting_y)

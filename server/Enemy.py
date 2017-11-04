@@ -19,7 +19,7 @@ class Enemy(Sprite):
         self.attack = enemy_types[self.enemy_type]["attack"]
         self.map_level = 0
         self.sprite_type = "Enemy"
-        self.image = enemy_types[self.enemy_type]["img"]
+        self.images = [enemy_types[self.enemy_type]["img"]]
         self.name = enemy_types[self.enemy_type]["name"]
         self.speed = enemy_types[self.enemy_type]["speed"]
         enemies.append(self)

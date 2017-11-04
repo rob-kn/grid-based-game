@@ -51,7 +51,8 @@ class Camera:
             x_pixel = x_pixel + self.player.offset[0] - sprite.offset[0]
             y_pixel = y_pixel + self.player.offset[1] - sprite.offset[1]
             rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
-            conf.screen.blit(sprite.image, rect)
+            for layer in sprite.images:
+                conf.screen.blit(layer, rect)
             self.draw_sprite_name(x_pixel, y_pixel, sprite.name)
             self.draw_sprite_health_bar(x_pixel, y_pixel, sprite.health, sprite.max_health)
             if sprite.sprite_id == self.player.target:
