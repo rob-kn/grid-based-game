@@ -48,21 +48,19 @@ def detect_events():
             conf.done = True
         if event.type == pg.MOUSEBUTTONDOWN:
             x_pixel, y_pixel = pg.mouse.get_pos()
-            print(x_pixel, y_pixel)
-            x_pos = int(x_pixel / conf.GRID_SQUARE_SIZE) + 1
-            y_pos = int(y_pixel / conf.GRID_SQUARE_SIZE) + 1
-            print(x_pos, y_pos)
-            rel_x_pos = x_pos - camera.center_x
-            rel_y_pos = y_pos - camera.center_y
-            print(rel_x_pos, rel_y_pos)
-            grid_x = rel_x_pos + player.x
-            grid_y = rel_y_pos + player.y
-            print(grid_x, grid_y)
             for sprite in sprites.values():
-                if sprite.x == grid_x and sprite.y == grid_y:
-                    player.target = sprite.sprite_id if player.target != sprite.sprite_id else None
+                sprite_x_pixel = (((sprite.x - player.x) + camera.center_x) - 1) * conf.GRID_SQUARE_SIZE
+                sprite_y_pixel = (((sprite.y - player.y) + camera.center_y) - 1) * conf.GRID_SQUARE_SIZE
+                sprite_x_pixel = sprite_x_pixel + player.offset[0] - sprite.offset[0]
+                sprite_y_pixel = sprite_y_pixel + player.offset[1] - sprite.offset[1]
+                sprite_x_pixel += camera.camera_startx
+                sprite_y_pixel += camera.camera_starty
+                if sprite_x_pixel < x_pixel < sprite_x_pixel + conf.GRID_SQUARE_SIZE:
+                    if sprite_y_pixel < y_pixel < sprite_y_pixel + conf.GRID_SQUARE_SIZE:
+                        player.target = sprite.sprite_id if player.target != sprite.sprite_id else None
         if event.type == pg.MOUSEBUTTONUP:
-            print(pg.mouse.get_pos())
+            #print(pg.mouse.get_pos())
+            pass
 
 
 camera = render.Camera()
