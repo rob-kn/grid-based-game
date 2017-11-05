@@ -46,5 +46,3 @@ class Sprite:
             change_y /= 2
         self.offset = (int(current_offset_x + change_x), int(current_offset_y + change_y))
         self.offset_float = (current_offset_x + change_x, current_offset_y + change_y)
-
-

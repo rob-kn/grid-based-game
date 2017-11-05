@@ -31,23 +31,23 @@ def set_player(p):
 
 def get_free_sides(center_x, center_y):
     free_tiles = []
-    for xy in [(center_x-1, center_y),
-               (center_x+1, center_y),
-               (center_x, center_y+1),
-               (center_x, center_y-1)]:
+    for xy in [(center_x - 1, center_y),
+               (center_x + 1, center_y),
+               (center_x, center_y + 1),
+               (center_x, center_y - 1)]:
         if is_tile_walkable(xy[0], xy[1]):
-            free_tiles.append((xy[0]-center_x, xy[1]-center_y))
+            free_tiles.append((xy[0] - center_x, xy[1] - center_y))
     return free_tiles
 
 
 def get_free_corners(center_x, center_y):
     free_tiles = []
-    for xy in [(center_x-1, center_y-1),
-               (center_x+1, center_y-1),
-               (center_x-1, center_y+1),
-               (center_x+1, center_y+1)]:
+    for xy in [(center_x - 1, center_y - 1),
+               (center_x + 1, center_y - 1),
+               (center_x - 1, center_y + 1),
+               (center_x + 1, center_y + 1)]:
         if is_tile_walkable(xy[0], xy[1]):
-            free_tiles.append((xy[0]-center_x, xy[1]-center_y))
+            free_tiles.append((xy[0] - center_x, xy[1] - center_y))
     return free_tiles
 
 
@@ -110,5 +110,3 @@ for i in range(15):
         x, y = random.randint(0, 80), random.randint(0, 20)
     temp_enemy = Enemy.Enemy(id_counter, x, y, "giant_eye")
     id_counter += 1
-
-

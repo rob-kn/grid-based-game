@@ -8,8 +8,8 @@ class Camera:
         self.width = conf.CAMERA_WIDTH
         self.camera_startx = conf.CAMERA_STARTX
         self.camera_starty = conf.CAMERA_STARTY
-        self.center_to_xedge = int((self.width - 1) / 2)     # 5
-        self.center_to_yedge = int((self.height - 1) / 2)    # 6
+        self.center_to_xedge = int((self.width - 1) / 2)  # 5
+        self.center_to_yedge = int((self.height - 1) / 2)  # 6
         self.center_x = self.width - self.center_to_xedge
         self.center_y = self.height - self.center_to_yedge
         self.map = [line.strip() for line in open('maps/level_0_map.txt').readlines()]
@@ -26,10 +26,10 @@ class Camera:
         conf.screen.fill((0, 0, 0))
         range_x, range_y = self.get_onscreen_range(grid_x, grid_y)
         for col_count, y in enumerate(range_y):
-            y_pixel = (col_count-1) * conf.GRID_SQUARE_SIZE + self.player.offset[1]
+            y_pixel = (col_count - 1) * conf.GRID_SQUARE_SIZE + self.player.offset[1]
             y_pixel += self.camera_starty
             for row_count, x in enumerate(range_x):
-                x_pixel = (row_count-1) * conf.GRID_SQUARE_SIZE + self.player.offset[0]
+                x_pixel = (row_count - 1) * conf.GRID_SQUARE_SIZE + self.player.offset[0]
                 x_pixel += self.camera_startx
                 rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
                 conf.screen.blit(self.images[self.map[y][x]], rect)
@@ -82,7 +82,8 @@ class Camera:
 
 class Overlay:
     def __init__(self):
-        self.font = conf.FONT
+        self.font32 = conf.FONT_32
+        self.font16 = conf.FONT_16
         self.left_pane_width = conf.LEFT_PANE_WIDTH
         self.left_pane_startx = conf.LEFT_PANE_STARTX
         self.left_pane_starty = conf.LEFT_PANE_STARTY
@@ -91,14 +92,37 @@ class Overlay:
         self.right_pane_starty = conf.RIGHT_PANE_STARTY
 
     def draw_overlay(self):
-        score_text = self.font.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
-        conf.screen.blit(score_text, (10, 5))
+        # score_text = self.font32.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
+        # conf.screen.blit(score_text, (10, 5))
+        pass
 
-    def draw_left_pane(self):
-        pg.draw.rect(conf.screen, conf.SILVER, (self.left_pane_startx, self.left_pane_starty,
-                                                self.left_pane_width, conf.SCREEN_HEIGHT), 0)
+    def draw_left_pane(self, player):
+        # For player info / stats
+
+        # Draw background
+        pg.draw.rect(conf.screen, conf.GREY, (self.left_pane_startx, self.left_pane_starty,
+                                              self.left_pane_width, conf.SCREEN_HEIGHT), 0)
+        # Draw border
+        pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx, self.left_pane_starty,
+                                                    self.left_pane_width, conf.SCREEN_HEIGHT), 5)
+        # Draw player name
+        name_text = self.font32.render(player.name, 1, conf.WHITE)
+        text_width = name_text.get_rect().width
+        text_spacing = (self.left_pane_width - text_width) / 2
+        conf.screen.blit(name_text, (self.left_pane_startx + text_spacing, self.left_pane_starty))
+        pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx + text_spacing,
+                                                    self.left_pane_starty + name_text.get_rect().height,
+                                                    text_width, 4), 0)
+        # Draw HP and MP
+        hp_text = conf.NAMES_FONT.render("HP", 1, conf.WHITE)
+        conf.screen.blit(hp_text, (10, 45))
 
     def draw_right_pane(self):
-        pg.draw.rect(conf.screen, conf.SILVER, (self.right_pane_startx, self.right_pane_starty,
-                                                self.right_pane_width, conf.SCREEN_HEIGHT), 0)
-
+        pg.draw.rect(conf.screen, conf.GREY, (self.right_pane_startx, self.right_pane_starty,
+                                              self.right_pane_width, conf.SCREEN_HEIGHT), 0)
+        pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.right_pane_startx, self.right_pane_starty,
+                                                    self.right_pane_width, conf.SCREEN_HEIGHT), 5)
+        inventory_text = self.font32.render("Inventory", 1, (255, 255, 255))
+        text_width = inventory_text.get_rect().width
+        text_spacing = (self.right_pane_width - text_width) / 2
+        conf.screen.blit(inventory_text, (self.right_pane_startx + text_spacing, self.right_pane_starty))

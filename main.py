@@ -59,7 +59,7 @@ def detect_events():
                     if sprite_y_pixel < y_pixel < sprite_y_pixel + conf.GRID_SQUARE_SIZE:
                         player.target = sprite.sprite_id if player.target != sprite.sprite_id else None
         if event.type == pg.MOUSEBUTTONUP:
-            #print(pg.mouse.get_pos())
+            # print(pg.mouse.get_pos())
             pass
 
 
@@ -88,7 +88,7 @@ while not conf.done:
     camera.draw_camera_map(player.x, player.y, player)
     camera.draw_entities(sprites)
     overlay.draw_overlay()
-    overlay.draw_left_pane()
+    overlay.draw_left_pane(player)
     overlay.draw_right_pane()
     # UPDATE
     pg.display.flip()

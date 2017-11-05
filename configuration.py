@@ -29,7 +29,9 @@ SCORE = 0
 done = False
 FPS = 60
 WHITE = (255, 255, 255)
-SILVER = (192,192,192)
+SILVER = (192, 192, 192)
+GREY = (64, 64, 64)
+SLATE_GREY = (112, 128, 144)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 RED = (255, 0, 0)
@@ -39,7 +41,8 @@ YELLOW = (255, 255, 0)
 pg.init()
 screen = pg.display.set_mode(SCREEN_SIZE)
 clock = pg.time.Clock()
-FONT = pg.font.Font('amatic/Amatic-Bold.ttf', 32)
+FONT_32 = pg.font.Font('amatic/Amatic-Bold.ttf', 32)
+FONT_16 = pg.font.Font('amatic/Amatic-Bold.ttf', 16)
 NAMES_FONT = pg.font.Font(None, 16)
 
 # Graphics

@@ -1,7 +1,6 @@
 import configuration as conf
 from server.Sprite import Sprite
 
-
 enemy_types = {"giant_eye": {"max_health": 100,
                              "attack": 20,
                              "speed": 1.2,
@@ -24,4 +23,3 @@ class Enemy(Sprite):
         self.speed = enemy_types[self.enemy_type]["speed"]
         enemies.append(self)
         super(Enemy, self).__init__(enemy_id, starting_x, starting_y)
-
