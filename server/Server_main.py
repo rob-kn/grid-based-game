@@ -71,10 +71,12 @@ def update_sprites():
     for sprite_id, sprite in Sprite.sprites.items():
         if sprite.sprite_type == "Enemy":
             apply_random_movement(sprite)
-        if sprite.health <= 0:
-            ids_to_remove.append(sprite_id)
-    if ids_to_remove:
-        Sprite.sprites = {key: value for key, value in Sprite.sprites.items() if key not in ids_to_remove}
+        if sprite.target:
+            id_to_remove = sprite.attack_sprite(sprite.target)
+            if id_to_remove:
+                ids_to_remove.append(id_to_remove)
+    for sprite_id in ids_to_remove:
+        del(Sprite.sprites[sprite_id])
 
 
 def attack_sprites():
@@ -86,6 +88,7 @@ def attack_sprites():
                     for y_change in range(-1, player1.range + 1):
                         if player1.x + x_change == sprite.x and player1.y + y_change:
                             sprite.health -= player1.attack
+        player1.target = None
         last_attack_time = time()
 
 
@@ -98,15 +101,16 @@ def get_sprites_around_xy(x_range, y_range):
 
 
 last_attack_time = time()
-id_counter = 0
+id_counter = 1
 
 player1 = Player.Player(id_counter, "Player", 45, 9)
 id_counter += 1
 # Creates 15 randomly places enemies.
 
-for i in range(15):
-    x, y = random.randint(0, 80), random.randint(0, 20)
-    while not is_tile_walkable(x, y):
-        x, y = random.randint(0, 80), random.randint(0, 20)
-    temp_enemy = Enemy.Enemy(id_counter, x, y, "giant_eye")
-    id_counter += 1
+e = Enemy.Enemy(id_counter, 46, 9, "giant_eye")
+# for i in range(15):
+#     x, y = random.randint(0, 80), random.randint(0, 20)
+#     while not is_tile_walkable(x, y):
+#         x, y = random.randint(0, 80), random.randint(0, 20)
+#     temp_enemy = Enemy.Enemy(id_counter, x, y, "giant_eye")
+#     id_counter += 1

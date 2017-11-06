@@ -62,25 +62,33 @@ class Camera:
             for layer in sprite.images:
                 conf.screen.blit(layer, rect)
             self.draw_sprite_name(x_pixel, y_pixel, sprite.name)
-            self.draw_sprite_health_bar(x_pixel, y_pixel, sprite.health, sprite.max_health)
+            draw_health_bar(x_pixel, y_pixel - 10, sprite.health, sprite.max_health, conf.GRID_SQUARE_SIZE, 5)
             if sprite.sprite_id == self.player.target:
                 pg.draw.rect(conf.screen, conf.RED, (x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE), 3)
 
     def draw_sprite_name(self, x, y, name):
-        name_text = conf.NAMES_FONT.render(name, 1, (255, 255, 255))
+        name_text = conf.NAMES_FONT.render(name, 1, conf.WHITE)
         text_width = name_text.get_rect().width
         text_spacing = (conf.GRID_SQUARE_SIZE - text_width) / 2
         conf.screen.blit(name_text, (x + text_spacing, y - 20))
 
-    def draw_sprite_health_bar(self, x, y, health, max_health):
-        health_percent = health / max_health
-        health_pixels = int(health_percent * conf.GRID_SQUARE_SIZE)
-        health_bar_color = conf.GREEN
-        if health_percent < 0.6:
-            health_bar_color = conf.YELLOW
-        if health_percent < 0.3:
-            health_bar_color = conf.RED
-        pg.draw.rect(conf.screen, health_bar_color, (x, y - 10, health_pixels, 5), 0)
+
+def draw_health_bar(x, y, health, max_health, max_width, thickness):
+    health_percent = health / max_health
+    health_pixels = int(health_percent * max_width)
+    health_bar_color = conf.GREEN
+    if health_percent < 0.6:
+        health_bar_color = conf.YELLOW
+    if health_percent < 0.3:
+        health_bar_color = conf.RED
+    pg.draw.rect(conf.screen, health_bar_color, (x, y, health_pixels, thickness), 0)
+
+
+def draw_mana_bar(x, y, mana, max_mana, max_width, thickness):
+    mana_percent = mana / max_mana
+    mana_pixels = int(mana_percent * max_width)
+    mana_bar_color = conf.BLUE
+    pg.draw.rect(conf.screen, mana_bar_color, (x, y, mana_pixels, thickness), 0)
 
 
 class Overlay:
@@ -106,8 +114,9 @@ class Overlay:
         pg.draw.rect(conf.screen, conf.GREY, (self.left_pane_startx, self.left_pane_starty,
                                               self.left_pane_width, conf.SCREEN_HEIGHT), 0)
         # Draw border
+        border_width = 5
         pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx, self.left_pane_starty,
-                                                    self.left_pane_width, conf.SCREEN_HEIGHT), 5)
+                                                    self.left_pane_width, conf.SCREEN_HEIGHT), border_width)
         # Draw player name
         name_text = self.font32.render(player.name, 1, conf.WHITE)
         text_width = name_text.get_rect().width
@@ -116,9 +125,25 @@ class Overlay:
         pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx + text_spacing,
                                                     self.left_pane_starty + name_text.get_rect().height,
                                                     text_width, 4), 0)
-        # Draw HP and MP
+        spacing = 5
+        # Draw HP
+        hp_row_starty = 45
         hp_text = conf.NAMES_FONT.render("HP", 1, conf.WHITE)
-        conf.screen.blit(hp_text, (10, 45))
+        conf.screen.blit(hp_text, (border_width + spacing, hp_row_starty))
+        bar_start = 40 + spacing * 2 + border_width
+        draw_health_bar(bar_start, hp_row_starty, player.health, player.max_health,
+                        self.left_pane_width - (bar_start + spacing + border_width), hp_text.get_rect().height)
+
+        # Draw MP
+        mp_row_starty = 60
+        mp_text = conf.NAMES_FONT.render("MP", 1, conf.WHITE)
+        conf.screen.blit(mp_text, (border_width + spacing, mp_row_starty))
+        bar_start = 40 + spacing * 2 + border_width
+        draw_mana_bar(bar_start, mp_row_starty, player.mana, player.max_mana,
+                        self.left_pane_width - (bar_start + spacing + border_width), mp_text.get_rect().height)
+        # Draw level, exp, total exp, %
+
+        # Draw equipment
 
     def draw_right_pane(self):
         pg.draw.rect(conf.screen, conf.GREY, (self.right_pane_startx, self.right_pane_starty,

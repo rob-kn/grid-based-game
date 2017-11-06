@@ -60,6 +60,10 @@ player_legs = pg.transform.scale(player_legs, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZ
 player_body = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/body/chainmail3.png")
 player_body = pg.transform.scale(player_body, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
-# Enemeies
+# Enemies
 giant_eye_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png")
 giant_eye_img = pg.transform.scale(giant_eye_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+
+# Items
+health_potion = pg.image.load("graphics/crawl-tiles Oct-5-2010/item/potion/ruby.png")
+health_potion = pg.transform.scale(health_potion, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))

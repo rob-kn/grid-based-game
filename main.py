@@ -51,8 +51,8 @@ def detect_events():
             for sprite in sprites.values():
                 sprite_x_pixel = (((sprite.x - player.x) + camera.center_x) - 1) * conf.GRID_SQUARE_SIZE
                 sprite_y_pixel = (((sprite.y - player.y) + camera.center_y) - 1) * conf.GRID_SQUARE_SIZE
-                sprite_x_pixel = sprite_x_pixel + player.offset[0] - sprite.offset[0]
-                sprite_y_pixel = sprite_y_pixel + player.offset[1] - sprite.offset[1]
+                sprite_x_pixel += player.offset[0] - sprite.offset[0]
+                sprite_y_pixel += player.offset[1] - sprite.offset[1]
                 sprite_x_pixel += camera.camera_startx
                 sprite_y_pixel += camera.camera_starty
                 if sprite_x_pixel < x_pixel < sprite_x_pixel + conf.GRID_SQUARE_SIZE:
@@ -73,7 +73,7 @@ while not conf.done:
     y_range = range(player.y - (camera.center_to_yedge + 2), player.y + (camera.center_to_yedge + 2))
     sprites = server.get_sprites_around_xy(x_range, y_range)
     server.update_sprites()
-    server.attack_sprites()
+    # server.attack_sprites()
 
     if player.offset == (0, 0):
         player.x, player.y = update_grid_pos((player.x, player.y))

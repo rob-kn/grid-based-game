@@ -1,4 +1,5 @@
 import configuration as conf
+from time import time
 
 sprites = {}
 
@@ -10,8 +11,30 @@ class Sprite:
         self.offset_float = (0.0, 0.0)
         self.x = starting_x
         self.y = starting_y
+        self.attack = 0
+        self.attack_speed = 10
+        self.range = 0
+        self.target = None
+        self.last_attack_time = time()
         self.map_level = 0
         sprites[self.sprite_id] = self
+
+    def attack_sprite(self, target_sprite_id):
+        target_to_remove = None
+        current_time = time()
+        print(current_time, self.last_attack_time, self.attack_speed)
+        if current_time - self.last_attack_time > self.attack_speed:
+            for x_change in range(-1, self.range + 1):
+                for y_change in range(-1, self.range + 1):
+                    if (self.x + x_change == sprites[target_sprite_id].x) and \
+                            (self.y + y_change == sprites[target_sprite_id].y):
+                        print(sprites[target_sprite_id].health)
+                        sprites[target_sprite_id].health -= self.attack
+                        if sprites[target_sprite_id].health <= 0:
+                            self.target = None
+                            target_to_remove = target_sprite_id
+            self.last_attack_time = time()
+        return target_to_remove
 
     def reset_offset(self, new_grid_pos, old_grid_pos):
         """Sets the appropriate offset when given an updated position in the grid."""
