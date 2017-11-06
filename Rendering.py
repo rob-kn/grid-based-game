@@ -34,6 +34,12 @@ class Camera:
                 rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
                 conf.screen.blit(self.images[self.map[y][x]], rect)
 
+    def draw_items(self, items):
+        for item_id, item in items.items():
+            x_pixel, y_pixel = get_rel_pos_on_camera(self.player, item, self)
+            rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
+            conf.screen.blit(item.image, rect)
+
     def get_onscreen_range(self, grid_x, grid_y):
         """
         This function takes an x and y and returns the ranges of tiles that should be drawn.
@@ -52,12 +58,7 @@ class Camera:
         for sprite in sorted(sprites.values(),
                              key=lambda s: ((s.x * conf.GRID_SQUARE_SIZE) + s.offset[0] + self.player.offset[0],
                                             (s.y * conf.GRID_SQUARE_SIZE) + s.offset[1] + self.player.offset[1])):
-            x_pixel = (((sprite.x - self.player.x) + self.center_x) - 1) * conf.GRID_SQUARE_SIZE
-            y_pixel = (((sprite.y - self.player.y) + self.center_y) - 1) * conf.GRID_SQUARE_SIZE
-            x_pixel += self.player.offset[0] - sprite.offset[0]
-            y_pixel += self.player.offset[1] - sprite.offset[1]
-            x_pixel += self.camera_startx
-            y_pixel += self.camera_starty
+            x_pixel, y_pixel = get_rel_pos_on_camera(self.player, sprite, self)
             rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
             for layer in sprite.images:
                 conf.screen.blit(layer, rect)
@@ -89,6 +90,16 @@ def draw_mana_bar(x, y, mana, max_mana, max_width, thickness):
     mana_pixels = int(mana_percent * max_width)
     mana_bar_color = conf.BLUE
     pg.draw.rect(conf.screen, mana_bar_color, (x, y, mana_pixels, thickness), 0)
+
+
+def get_rel_pos_on_camera(relative_player, sprite, camera):
+    x_pixel = (((sprite.x - relative_player.x) + camera.center_x) - 1) * conf.GRID_SQUARE_SIZE
+    y_pixel = (((sprite.y - relative_player.y) + camera.center_y) - 1) * conf.GRID_SQUARE_SIZE
+    x_pixel += relative_player.offset[0] - sprite.offset[0]
+    y_pixel += relative_player.offset[1] - sprite.offset[1]
+    x_pixel += camera.camera_startx
+    y_pixel += camera.camera_starty
+    return x_pixel, y_pixel
 
 
 class Overlay:

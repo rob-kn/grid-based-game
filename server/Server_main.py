@@ -3,11 +3,12 @@ import configuration as conf
 from server import Player
 from server import Enemy
 from server import Sprite
+from server import Item
 import random
-from time import time
 
 
-def is_tile_walkable(x_test, y_test):
+
+def is_tile_walkable(x_test, y_test, sprite_id):
     is_walkable = True
     if conf.COMPLETE_GRID[y_test][x_test] != ' ':
         is_walkable = False
@@ -35,7 +36,7 @@ def get_free_sides(center_x, center_y):
                (center_x + 1, center_y),
                (center_x, center_y + 1),
                (center_x, center_y - 1)]:
-        if is_tile_walkable(xy[0], xy[1]):
+        if is_tile_walkable(xy[0], xy[1], None):
             free_tiles.append((xy[0] - center_x, xy[1] - center_y))
     return free_tiles
 
@@ -46,7 +47,7 @@ def get_free_corners(center_x, center_y):
                (center_x + 1, center_y - 1),
                (center_x - 1, center_y + 1),
                (center_x + 1, center_y + 1)]:
-        if is_tile_walkable(xy[0], xy[1]):
+        if is_tile_walkable(xy[0], xy[1], None):
             free_tiles.append((xy[0] - center_x, xy[1] - center_y))
     return free_tiles
 
@@ -79,19 +80,6 @@ def update_sprites():
         del(Sprite.sprites[sprite_id])
 
 
-def attack_sprites():
-    global last_attack_time
-    if time() - last_attack_time > player1.attack_speed:
-        for sprite in Sprite.sprites.values():
-            if sprite.sprite_id == player1.target:
-                for x_change in range(-1, player1.range + 1):
-                    for y_change in range(-1, player1.range + 1):
-                        if player1.x + x_change == sprite.x and player1.y + y_change:
-                            sprite.health -= player1.attack
-        player1.target = None
-        last_attack_time = time()
-
-
 def get_sprites_around_xy(x_range, y_range):
     sprites_in_range = {}
     for sprite_id, sprite in Sprite.sprites.items():
@@ -100,17 +88,32 @@ def get_sprites_around_xy(x_range, y_range):
     return sprites_in_range
 
 
-last_attack_time = time()
-id_counter = 1
+def get_items_around_xy(x_range, y_range):
+    items_in_range = {}
+    for item_id, item in Item.items.items():
+        if item.x in x_range and item.y in y_range:
+            items_in_range[item_id] = item
+    return items_in_range
 
-player1 = Player.Player(id_counter, "Player", 45, 9)
+
+id_counter = 1
+player1 = Player.Player(id_counter, "Rob", 45, 9)
 id_counter += 1
 # Creates 15 randomly places enemies.
 
-e = Enemy.Enemy(id_counter, 46, 9, "giant_eye")
-# for i in range(15):
-#     x, y = random.randint(0, 80), random.randint(0, 20)
-#     while not is_tile_walkable(x, y):
-#         x, y = random.randint(0, 80), random.randint(0, 20)
-#     temp_enemy = Enemy.Enemy(id_counter, x, y, "giant_eye")
-#     id_counter += 1
+# e = Enemy.Enemy(id_counter, 46, 9, "giant_eye")
+for i in range(15):
+    x, y = random.randint(0, 80), random.randint(0, 20)
+    while not is_tile_walkable(x, y, None):
+        x, y = random.randint(0, 80), random.randint(0, 20)
+    Enemy.Enemy(id_counter, x, y, "giant_eye")
+    id_counter += 1
+# id_counter += 1
+
+# hk = Item.HealthKit(id_counter, 47, 9)
+for i in range(15):
+    x, y = random.randint(0, 80), random.randint(0, 20)
+    while not is_tile_walkable(x, y, None):
+        x, y = random.randint(0, 80), random.randint(0, 20)
+    Item.HealthKit(id_counter, x, y)
+    id_counter += 1

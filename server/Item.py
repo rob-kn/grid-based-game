@@ -13,15 +13,24 @@ items = {}
 
 
 class Item:
-    def __init__(self, item_id, type):
+    def __init__(self, item_id, item_type):
         self.item_id = item_id
-        self.type = type
-        self.name = item_types[type]["name"]
-        self.image = item_types[type]["image"]
-        self.can_carry = item_types[type]["can_carry"]
-        items[item_id] = self
+        self.type = item_type
+        self.name = item_types[item_type]["name"]
+        self.image = item_types[item_type]["image"]
+        self.can_carry = item_types[item_type]["can_carry"]
 
 
 class HealthKit(Item):
-    def use_on_target(self, target):
-        pass
+    def __init__(self, item_id, x, y):
+        super(HealthKit, self).__init__(item_id, "health_kit")
+        self.x = x
+        self.y = y
+        self.offset = (0, 0)
+        self.health_increase = 30
+        items[item_id] = self
+
+    def use_on_target(self, target_sprite):
+        target_sprite.health += self.health_increase
+        target_sprite.health = min(target_sprite.max_health, target_sprite.health)
+        return self.item_id

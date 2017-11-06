@@ -73,7 +73,7 @@ while not conf.done:
     y_range = range(player.y - (camera.center_to_yedge + 2), player.y + (camera.center_to_yedge + 2))
     sprites = server.get_sprites_around_xy(x_range, y_range)
     server.update_sprites()
-    # server.attack_sprites()
+    items = server.get_items_around_xy(x_range, y_range)
 
     if player.offset == (0, 0):
         player.x, player.y = update_grid_pos((player.x, player.y))
@@ -86,6 +86,7 @@ while not conf.done:
 
     # DRAW
     camera.draw_camera_map(player.x, player.y, player)
+    camera.draw_items(items)
     camera.draw_entities(sprites)
     overlay.draw_overlay()
     overlay.draw_left_pane(player)

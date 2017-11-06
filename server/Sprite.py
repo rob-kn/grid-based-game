@@ -1,5 +1,6 @@
 import configuration as conf
 from time import time
+import server.Item as Item
 
 sprites = {}
 
@@ -17,18 +18,16 @@ class Sprite:
         self.target = None
         self.last_attack_time = time()
         self.map_level = 0
-        sprites[self.sprite_id] = self
+        self.inventory = []
 
     def attack_sprite(self, target_sprite_id):
         target_to_remove = None
         current_time = time()
-        print(current_time, self.last_attack_time, self.attack_speed)
         if current_time - self.last_attack_time > self.attack_speed:
             for x_change in range(-1, self.range + 1):
                 for y_change in range(-1, self.range + 1):
                     if (self.x + x_change == sprites[target_sprite_id].x) and \
                             (self.y + y_change == sprites[target_sprite_id].y):
-                        print(sprites[target_sprite_id].health)
                         sprites[target_sprite_id].health -= self.attack
                         if sprites[target_sprite_id].health <= 0:
                             self.target = None
@@ -69,3 +68,14 @@ class Sprite:
             change_y /= 2
         self.offset = (int(current_offset_x + change_x), int(current_offset_y + change_y))
         self.offset_float = (current_offset_x + change_x, current_offset_y + change_y)
+
+        # check items
+        if self.offset == (0, 0):
+            ids_to_remove = []
+            for item in Item.items.values():
+                if item.x == self.x and item.y == self.y:
+                    if self.health < self.max_health:
+                        id_to_remove = item.use_on_target(self)
+                        ids_to_remove.append(id_to_remove)
+            for item_id in ids_to_remove:
+                del Item.items[item_id]
