@@ -49,7 +49,9 @@ class Camera:
         The sprites are ordered so the top left is drawn first and the bottom right is drawn last.
         """
         # TODO sort and draw sprites by their position on screen (pixel) not grid ref
-        for sprite in sorted(sprites.values(), key=lambda s: (s.x, s.y)):
+        for sprite in sorted(sprites.values(),
+                             key=lambda s: ((s.x * conf.GRID_SQUARE_SIZE) + s.offset[0] + self.player.offset[0],
+                                            (s.y * conf.GRID_SQUARE_SIZE) + s.offset[1] + self.player.offset[1])):
             x_pixel = (((sprite.x - self.player.x) + self.center_x) - 1) * conf.GRID_SQUARE_SIZE
             y_pixel = (((sprite.y - self.player.y) + self.center_y) - 1) * conf.GRID_SQUARE_SIZE
             x_pixel += self.player.offset[0] - sprite.offset[0]
