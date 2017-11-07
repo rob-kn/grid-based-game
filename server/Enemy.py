@@ -1,13 +1,17 @@
 import configuration as conf
 import server.Sprite as Sprite
 
-enemy_types = {"giant_eye": {"max_health": 100,
-                             "attack": 10,
-                             "attack_speed": 1,
-                             "speed": 1.2,
-                             "name": "Giant Eye",
-                             "img": conf.giant_eye_img,
-                             "range": 1}}
+enemy_types = {"giant_eye": {
+    "max_health": 100,
+    "attack": 5,
+    "attack_speed": 1,
+    "speed": 1.2,
+    "name": "Giant Eye",
+    "img": conf.giant_eye_img,
+    "exp_to_gain": 3,
+    "range": 1
+}
+}
 
 
 class Enemy(Sprite.Sprite):
@@ -26,4 +30,3 @@ class Enemy(Sprite.Sprite):
         self.speed = enemy_types[self.enemy_type]["speed"]
         self.target = 1
         Sprite.sprites[self.sprite_id] = self
-

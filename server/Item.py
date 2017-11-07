@@ -31,6 +31,5 @@ class HealthKit(Item):
         items[item_id] = self
 
     def use_on_target(self, target_sprite):
-        target_sprite.health += self.health_increase
-        target_sprite.health = min(target_sprite.max_health, target_sprite.health)
+        target_sprite.change_health(target_sprite.health + self.health_increase)
         return self.item_id

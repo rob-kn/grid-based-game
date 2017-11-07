@@ -139,7 +139,7 @@ class Overlay:
         spacing = 5
         # Draw HP
         hp_row_starty = 45
-        hp_text = conf.NAMES_FONT.render("HP", 1, conf.WHITE)
+        hp_text = conf.NAMES_FONT.render("Health", 1, conf.WHITE)
         conf.screen.blit(hp_text, (border_width + spacing, hp_row_starty))
         bar_start = 40 + spacing * 2 + border_width
         draw_health_bar(bar_start, hp_row_starty, player.health, player.max_health,
@@ -147,13 +147,23 @@ class Overlay:
 
         # Draw MP
         mp_row_starty = 60
-        mp_text = conf.NAMES_FONT.render("MP", 1, conf.WHITE)
+        mp_text = conf.NAMES_FONT.render("Mana", 1, conf.WHITE)
         conf.screen.blit(mp_text, (border_width + spacing, mp_row_starty))
         bar_start = 40 + spacing * 2 + border_width
         draw_mana_bar(bar_start, mp_row_starty, player.mana, player.max_mana,
-                        self.left_pane_width - (bar_start + spacing + border_width), mp_text.get_rect().height)
-        # Draw level, exp, total exp, %
+                      self.left_pane_width - (bar_start + spacing + border_width), mp_text.get_rect().height)
 
+        # Draw level, exp, total exp, %
+        level_exp_starty = 75
+        level_exp_text = self.font32.render("Level {:<5} Exp {:<5}".format(player.player_level, player.exp), 1,
+                                            conf.WHITE)
+        text_width = level_exp_text.get_rect().width
+        text_spacing = (self.left_pane_width - text_width) / 2
+        conf.screen.blit(level_exp_text,
+                         (self.left_pane_startx + text_spacing, self.left_pane_starty + level_exp_starty))
+        pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx + text_spacing,
+                                                    self.left_pane_starty + name_text.get_rect().height,
+                                                    text_width, 4), 0)
         # Draw equipment
 
     def draw_right_pane(self):

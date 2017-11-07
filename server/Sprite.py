@@ -20,20 +20,30 @@ class Sprite:
         self.map_level = 0
         self.inventory = []
 
-    def attack_sprite(self, target_sprite_id):
+    def attack_sprite(self):
         target_to_remove = None
         current_time = time()
         if current_time - self.last_attack_time > self.attack_speed:
             for x_change in range(-1, self.range + 1):
                 for y_change in range(-1, self.range + 1):
-                    if (self.x + x_change == sprites[target_sprite_id].x) and \
-                            (self.y + y_change == sprites[target_sprite_id].y):
-                        sprites[target_sprite_id].health -= self.attack
-                        if sprites[target_sprite_id].health <= 0:
-                            self.target = None
-                            target_to_remove = target_sprite_id
+                    if (self.x + x_change == sprites[self.target].x) and \
+                            (self.y + y_change == sprites[self.target].y):
+                        sprites[self.target].change_health(sprites[self.target].health - self.attack)
+                        if sprites[self.target].health <= 0:
+                            target_to_remove = [self.target]
             self.last_attack_time = time()
-        return target_to_remove
+        if target_to_remove:
+            if self.sprite_type == "Player":
+                enemy_type_killed = sprites[self.target].enemy_type
+                self.add_experience(enemy_type_killed)
+            self.target = None
+            return target_to_remove[0]
+        else:
+            return target_to_remove
+
+    def change_health(self, new_health):
+        self.health = min(new_health, self.max_health)
+        self.health = max(self.health, 0)
 
     def reset_offset(self, new_grid_pos, old_grid_pos):
         """Sets the appropriate offset when given an updated position in the grid."""
