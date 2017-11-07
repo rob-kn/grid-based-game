@@ -1,9 +1,10 @@
 import configuration as conf
+import pygame as pg
 
 item_types = {
     "health_kit": {
         "name": "Health Kit",
-        "image": conf.health_potion,
+        "image": "graphics/crawl-tiles Oct-5-2010/item/potion/ruby.png",
         "can_carry": True,
         "health_increase": 40
     }
@@ -17,7 +18,8 @@ class Item:
         self.item_id = item_id
         self.type = item_type
         self.name = item_types[item_type]["name"]
-        self.image = item_types[item_type]["image"]
+        raw_image = pg.image.load(item_types[item_type]["image"])
+        self.image = pg.transform.scale(raw_image, (conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE))
         self.can_carry = item_types[item_type]["can_carry"]
 
 

@@ -56,6 +56,10 @@ class Sprite:
         new_offset_y = +conf.GRID_SQUARE_SIZE if new_grid_pos[1] > old_grid_pos[1] else new_offset_y
         self.offset = (new_offset_x, new_offset_y)
         self.offset_float = (float(new_offset_x), float(new_offset_y))
+        if new_offset_x > 0:
+            self.images = [self.base_image_flipped]
+        elif new_offset_x < 0:
+            self.images = [self.base_image]
 
     def reduce_offset(self):
         """

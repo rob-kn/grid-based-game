@@ -59,22 +59,22 @@ floor_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/tomb0.p
 floor_img = pg.transform.scale(floor_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
 # Player
-player_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/base/human_m.png")
-player_img = pg.transform.scale(player_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-player_legs = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/legs/leg_armor01.png")
-player_legs = pg.transform.scale(player_legs, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-player_body = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/body/chainmail3.png")
-player_body = pg.transform.scale(player_body, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-
-deep_troll = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/deep_troll.png")
-deep_troll = pg.transform.scale(deep_troll, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+# player_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/base/human_m.png")
+# player_img = pg.transform.scale(player_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+# player_legs = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/legs/leg_armor01.png")
+# player_legs = pg.transform.scale(player_legs, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+# player_body = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/body/chainmail3.png")
+# player_body = pg.transform.scale(player_body, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+#
+# deep_troll = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/deep_troll.png")
+# deep_troll = pg.transform.scale(deep_troll, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
 # Enemies
-giant_eye_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png")
-giant_eye_img = pg.transform.scale(giant_eye_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-grey_rat_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/animals/grey_rat.png")
-grey_rat_img = pg.transform.scale(grey_rat_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+# giant_eye_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png")
+# giant_eye_img = pg.transform.scale(giant_eye_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+# grey_rat_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/animals/grey_rat.png")
+# grey_rat_img = pg.transform.scale(grey_rat_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
 # Items
-health_potion = pg.image.load("graphics/crawl-tiles Oct-5-2010/item/potion/ruby.png")
-health_potion = pg.transform.scale(health_potion, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+# health_potion = pg.image.load("graphics/crawl-tiles Oct-5-2010/item/potion/ruby.png")
+# health_potion = pg.transform.scale(health_potion, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))

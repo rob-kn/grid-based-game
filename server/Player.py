@@ -2,6 +2,7 @@ import configuration as conf
 import server.Sprite as Sprite
 import server.Enemy as Enemy
 from time import time
+import pygame as pg
 
 level_boundaries = {
     1: 0,
@@ -29,7 +30,10 @@ class Player(Sprite.Sprite):
         self.last_level_up_time = 0
         self.exp = 0
         # self.images = [conf.player_img, conf.player_legs, conf.player_body]
-        self.images = [conf.deep_troll]
+        deep_troll_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/deep_troll.png")
+        self.base_image = pg.transform.scale(deep_troll_img, (conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE))
+        self.base_image_flipped = pg.transform.flip(self.base_image, True, False)
+        self.images = [self.base_image]
         Sprite.sprites[self.sprite_id] = self
 
     def add_experience(self, enemy_type):

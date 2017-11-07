@@ -1,5 +1,6 @@
 import configuration as conf
 import server.Sprite as Sprite
+import pygame as pg
 
 enemy_types = {
     "giant_eye": {
@@ -8,7 +9,7 @@ enemy_types = {
         "attack_speed": 1,
         "speed": 1.2,
         "name": "Giant Eye",
-        "img": conf.giant_eye_img,
+        "img": "graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png",
         "exp_to_gain": 5,
         "range": 1
     },
@@ -18,7 +19,7 @@ enemy_types = {
         "attack_speed": 2,
         "speed": 5,
         "name": "Rat",
-        "img": conf.grey_rat_img,
+        "img": "graphics/crawl-tiles Oct-5-2010/dc-mon/animals/grey_rat.png",
         "exp_to_gain": 2,
         "range": 1
     }
@@ -36,7 +37,10 @@ class Enemy(Sprite.Sprite):
         self.range = enemy_types[self.enemy_type]["range"]
         self.map_level = 0
         self.sprite_type = "Enemy"
-        self.images = [enemy_types[self.enemy_type]["img"]]
+        raw_image = pg.image.load(enemy_types[self.enemy_type]["img"])
+        self.base_image = pg.transform.scale(raw_image, (conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE))
+        self.base_image_flipped = pg.transform.flip(self.base_image, True, False)
+        self.images = [self.base_image]
         self.name = enemy_types[self.enemy_type]["name"]
         self.speed = enemy_types[self.enemy_type]["speed"]
         self.target = 1

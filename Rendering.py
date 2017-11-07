@@ -56,7 +56,6 @@ class Camera:
         Draws sprites, such as enemies, on the screen, relative to the player.
         The sprites are ordered so the top left is drawn first and the bottom right is drawn last.
         """
-        # TODO sort and draw sprites by their position on screen (pixel) not grid ref
         for sprite in sorted(sprites.values(),
                              key=lambda s: ((s.x * conf.GRID_SQUARE_SIZE) + s.offset[0] + self.player.offset[0],
                                             (s.y * conf.GRID_SQUARE_SIZE) + s.offset[1] + self.player.offset[1])):
