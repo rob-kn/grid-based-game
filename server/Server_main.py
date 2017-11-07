@@ -9,7 +9,7 @@ import random
 
 def is_tile_walkable(x_test, y_test, sprite_id):
     is_walkable = True
-    if conf.COMPLETE_GRID[y_test][x_test] != ' ':
+    if conf.MAP_0[y_test][x_test].startswith('#'):
         is_walkable = False
     if (x_test, y_test) == (player1.x, player1.y):
         is_walkable = False
@@ -97,29 +97,29 @@ def get_items_around_xy(x_range, y_range):
 
 
 id_counter = 1
-player1 = Player.Player(id_counter, "Rob", 45, 9)
+player1 = Player.Player(id_counter, "Rob", 18, 18)
 id_counter += 1
 # Creates 15 randomly places enemies.
 
 # e = Enemy.Enemy(id_counter, 46, 9, "giant_eye")
 for i in range(10):
-    x, y = random.randint(0, 80), random.randint(0, 20)
+    x, y = random.randint(0, 70), random.randint(0, 30)
     while not is_tile_walkable(x, y, None):
-        x, y = random.randint(0, 80), random.randint(0, 20)
+        x, y = random.randint(0, 70), random.randint(0, 30)
     Enemy.Enemy(id_counter, x, y, "giant_eye")
     id_counter += 1
 
 for i in range(10):
-    x, y = random.randint(0, 80), random.randint(0, 20)
+    x, y = random.randint(0, 70), random.randint(0, 30)
     while not is_tile_walkable(x, y, None):
-        x, y = random.randint(0, 80), random.randint(0, 20)
+        x, y = random.randint(0, 70), random.randint(0, 30)
     Enemy.Enemy(id_counter, x, y, "grey_rat")
     id_counter += 1
 
 # hk = Item.HealthKit(id_counter, 47, 9)
 for i in range(10):
-    x, y = random.randint(0, 80), random.randint(0, 20)
+    x, y = random.randint(0, 70), random.randint(0, 30)
     while not is_tile_walkable(x, y, None):
-        x, y = random.randint(0, 80), random.randint(0, 20)
+        x, y = random.randint(0, 70), random.randint(0, 30)
     Item.HealthKit(id_counter, x, y)
     id_counter += 1

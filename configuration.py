@@ -1,4 +1,5 @@
 import pygame as pg
+import json
 
 GRID_SQUARE_SIZE = 64
 
@@ -23,7 +24,7 @@ RIGHT_PANE_STARTY = 0
 SCREEN_HEIGHT = CAMERA_HEIGHT_PIXELS
 SCREEN_WIDTH = LEFT_PANE_WIDTH + CAMERA_WIDTH_PIXELS + RIGHT_PANE_WIDTH
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
-COMPLETE_GRID = [line.strip() for line in open('maps/level_0_map.txt').readlines()]
+MAP_0 = [line.split('\t') for line in open('maps/map_0.csv').readlines()]
 
 SCORE = 0
 done = False
@@ -53,28 +54,12 @@ NAMES_FONT = pg.font.Font(None, 16)
 
 # Graphics
 # Map
-wall_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-dngn/wall/brick_dark0.png")
-wall_img = pg.transform.scale(wall_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-floor_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/tomb0.png")
-floor_img = pg.transform.scale(floor_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
-# Player
-# player_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/base/human_m.png")
-# player_img = pg.transform.scale(player_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-# player_legs = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/legs/leg_armor01.png")
-# player_legs = pg.transform.scale(player_legs, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-# player_body = pg.image.load("graphics/crawl-tiles Oct-5-2010/player/body/chainmail3.png")
-# player_body = pg.transform.scale(player_body, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-#
-# deep_troll = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/deep_troll.png")
-# deep_troll = pg.transform.scale(deep_troll, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+with open('tile_codes.json') as tc_json_data:
+    tile_codes = json.load(tc_json_data)
+tile_code_images = {}
+for tile_code, fp in tile_codes.items():
+    tile_img = pg.image.load(fp)
+    tile_img = pg.transform.scale(tile_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+    tile_code_images[tile_code] = tile_img
 
-# Enemies
-# giant_eye_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png")
-# giant_eye_img = pg.transform.scale(giant_eye_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-# grey_rat_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/animals/grey_rat.png")
-# grey_rat_img = pg.transform.scale(grey_rat_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
-
-# Items
-# health_potion = pg.image.load("graphics/crawl-tiles Oct-5-2010/item/potion/ruby.png")
-# health_potion = pg.transform.scale(health_potion, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))

@@ -1,5 +1,5 @@
 import pygame as pg
-from time import time
+import time
 
 import configuration as conf
 import Rendering as render
@@ -8,7 +8,7 @@ from server import Server_main as server
 
 def is_tile_walkable(x_test, y_test):
     is_walkable = True
-    if conf.COMPLETE_GRID[y_test][x_test] != ' ':
+    if conf.MAP_0[y_test][x_test].startswith('#'):
         is_walkable = False
     if (x_test, y_test) == (player.x, player.y):
         is_walkable = False

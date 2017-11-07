@@ -16,8 +16,8 @@ enemy_types = {
     "grey_rat": {
         "max_health": 50,
         "attack": 3,
-        "attack_speed": 2,
-        "speed": 5,
+        "attack_speed": 1,
+        "speed": 2,
         "name": "Rat",
         "img": "graphics/crawl-tiles Oct-5-2010/dc-mon/animals/grey_rat.png",
         "exp_to_gain": 2,

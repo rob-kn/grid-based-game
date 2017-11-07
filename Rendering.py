@@ -2,6 +2,7 @@ import pygame as pg
 import configuration as conf
 import random
 from time import time
+import json
 
 
 class Camera:
@@ -14,10 +15,10 @@ class Camera:
         self.center_to_yedge = int((self.height - 1) / 2)  # 6
         self.center_x = self.width - self.center_to_xedge
         self.center_y = self.height - self.center_to_yedge
-        self.map = [line.strip() for line in open('maps/level_0_map.txt').readlines()]
-        self.images = {'#': conf.wall_img,
-                       ' ': conf.floor_img}
         self.player = None
+        with open('tile_codes.json') as tc_json_data:
+            self.tile_codes = json.load(tc_json_data)
+        print(self.tile_codes)
 
     def draw_camera_map(self, grid_x, grid_y, player):
         """
@@ -34,7 +35,7 @@ class Camera:
                 x_pixel = (row_count - 1) * conf.GRID_SQUARE_SIZE + self.player.offset[0]
                 x_pixel += self.camera_startx
                 rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
-                conf.screen.blit(self.images[self.map[y][x]], rect)
+                conf.screen.blit(conf.tile_code_images[conf.MAP_0[y][x][1:]], rect)
 
     def draw_items(self, items):
         for item_id, item in items.items():
