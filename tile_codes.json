@@ -1,4 +1,13 @@
 {
   "BRICK0": "graphics/crawl-tiles Oct-5-2010/dc-dngn/wall/brick_dark0.png",
-  "TOMB0": "graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/tomb0.png"
+  "BRICK4": "graphics/crawl-tiles Oct-5-2010/dc-dngn/wall/brick_dark4.png",
+  "GATEOL": "graphics/crawl-tiles Oct-5-2010/dc-dngn/gate_open_left.png",
+  "GATEOM": "graphics/crawl-tiles Oct-5-2010/dc-dngn/gate_open_middle.png",
+  "GATEOR": "graphics/crawl-tiles Oct-5-2010/dc-dngn/gate_open_right.png",
+  "MESH0": "graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/mesh0.png",
+  "MESH1": "graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/mesh1.png",
+  "MESH2": "graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/mesh2.png",
+  "MESH3": "graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/mesh3.png",
+  "TOMB0": "graphics/crawl-tiles Oct-5-2010/dc-dngn/floor/tomb0.png",
+  "BFTAIN0": "graphics/crawl-tiles Oct-5-2010/dc-dngn/dngn_blood_fountain.png"
 }

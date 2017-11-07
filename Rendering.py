@@ -35,7 +35,9 @@ class Camera:
                 x_pixel = (row_count - 1) * conf.GRID_SQUARE_SIZE + self.player.offset[0]
                 x_pixel += self.camera_startx
                 rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
-                conf.screen.blit(conf.tile_code_images[conf.MAP_0[y][x][1:]], rect)
+                tile_images = conf.MAP_0[y][x][1:].split('+')
+                for image_code in tile_images:
+                    conf.screen.blit(conf.tile_code_images[image_code], rect)
 
     def draw_items(self, items):
         for item_id, item in items.items():
