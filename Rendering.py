@@ -1,5 +1,7 @@
 import pygame as pg
 import configuration as conf
+import random
+from time import time
 
 
 class Camera:
@@ -62,16 +64,23 @@ class Camera:
             rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
             for layer in sprite.images:
                 conf.screen.blit(layer, rect)
-            self.draw_sprite_name(x_pixel, y_pixel, sprite.name)
+
+    def draw_health_and_names(self, sprites):
+        for sprite in sorted(sprites.values(),
+                             key=lambda s: ((s.x * conf.GRID_SQUARE_SIZE) + s.offset[0] + self.player.offset[0],
+                                            (s.y * conf.GRID_SQUARE_SIZE) + s.offset[1] + self.player.offset[1])):
+            x_pixel, y_pixel = get_rel_pos_on_camera(self.player, sprite, self)
+            draw_sprite_name(x_pixel, y_pixel, sprite.name)
             draw_health_bar(x_pixel, y_pixel - 10, sprite.health, sprite.max_health, conf.GRID_SQUARE_SIZE, 5)
             if sprite.sprite_id == self.player.target:
                 pg.draw.rect(conf.screen, conf.RED, (x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE), 3)
 
-    def draw_sprite_name(self, x, y, name):
-        name_text = conf.NAMES_FONT.render(name, 1, conf.WHITE)
-        text_width = name_text.get_rect().width
-        text_spacing = (conf.GRID_SQUARE_SIZE - text_width) / 2
-        conf.screen.blit(name_text, (x + text_spacing, y - 20))
+
+def draw_sprite_name(x, y, name):
+    name_text = conf.NAMES_FONT.render(name, 1, conf.WHITE)
+    text_width = name_text.get_rect().width
+    text_spacing = (conf.GRID_SQUARE_SIZE - text_width) / 2
+    conf.screen.blit(name_text, (x + text_spacing, y - 20))
 
 
 def draw_health_bar(x, y, health, max_health, max_width, thickness):
@@ -104,67 +113,118 @@ def get_rel_pos_on_camera(relative_player, sprite, camera):
 
 class Overlay:
     def __init__(self):
+        self.font48 = conf.FONT_48
         self.font32 = conf.FONT_32
+        self.font32_bold = conf.FONT_32_BOLD
         self.font16 = conf.FONT_16
         self.left_pane_width = conf.LEFT_PANE_WIDTH
         self.left_pane_startx = conf.LEFT_PANE_STARTX
         self.left_pane_starty = conf.LEFT_PANE_STARTY
+        self.left_pane_border_width = 5
         self.right_pane_width = conf.RIGHT_PANE_WIDTH
         self.right_pane_startx = conf.RIGHT_PANE_STARTX
         self.right_pane_starty = conf.RIGHT_PANE_STARTY
-
-    def draw_overlay(self):
-        # score_text = self.font32.render("Score - {0}".format(conf.SCORE), 1, (255, 255, 255))
-        # conf.screen.blit(score_text, (10, 5))
-        pass
+        self.y_spacing = 5
+        self.player = None
 
     def draw_left_pane(self, player):
+        self.player = player
         # For player info / stats
 
         # Draw background
         pg.draw.rect(conf.screen, conf.GREY, (self.left_pane_startx, self.left_pane_starty,
                                               self.left_pane_width, conf.SCREEN_HEIGHT), 0)
+
         # Draw border
-        border_width = 5
         pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx, self.left_pane_starty,
-                                                    self.left_pane_width, conf.SCREEN_HEIGHT), border_width)
-        # Draw player name
-        name_text = self.font32.render(player.name, 1, conf.WHITE)
-        text_width = name_text.get_rect().width
-        text_spacing = (self.left_pane_width - text_width) / 2
-        conf.screen.blit(name_text, (self.left_pane_startx + text_spacing, self.left_pane_starty))
-        pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx + text_spacing,
-                                                    self.left_pane_starty + name_text.get_rect().height,
-                                                    text_width, 4), 0)
-        spacing = 5
-        # Draw HP
-        hp_row_starty = 45
-        hp_text = conf.NAMES_FONT.render("Health", 1, conf.WHITE)
-        conf.screen.blit(hp_text, (border_width + spacing, hp_row_starty))
-        bar_start = 40 + spacing * 2 + border_width
-        draw_health_bar(bar_start, hp_row_starty, player.health, player.max_health,
-                        self.left_pane_width - (bar_start + spacing + border_width), hp_text.get_rect().height)
+                                                    self.left_pane_width, conf.SCREEN_HEIGHT),
+                     self.left_pane_border_width)
 
-        # Draw MP
-        mp_row_starty = 60
-        mp_text = conf.NAMES_FONT.render("Mana", 1, conf.WHITE)
-        conf.screen.blit(mp_text, (border_width + spacing, mp_row_starty))
-        bar_start = 40 + spacing * 2 + border_width
-        draw_mana_bar(bar_start, mp_row_starty, player.mana, player.max_mana,
-                      self.left_pane_width - (bar_start + spacing + border_width), mp_text.get_rect().height)
+        # Draw player name, lvl and exp, hp and mp bars
+        pname_end_y = self.draw_pname(self.left_pane_startx + self.left_pane_border_width,
+                                      self.left_pane_starty + self.left_pane_border_width)
 
-        # Draw level, exp, total exp, %
-        level_exp_starty = 75
-        level_exp_text = self.font32.render("Level {:<5} Exp {:<5}".format(player.player_level, player.exp), 1,
-                                            conf.WHITE)
-        text_width = level_exp_text.get_rect().width
-        text_spacing = (self.left_pane_width - text_width) / 2
-        conf.screen.blit(level_exp_text,
-                         (self.left_pane_startx + text_spacing, self.left_pane_starty + level_exp_starty))
-        pg.draw.rect(conf.screen, conf.SLATE_GREY, (self.left_pane_startx + text_spacing,
-                                                    self.left_pane_starty + name_text.get_rect().height,
-                                                    text_width, 4), 0)
+        lvl_exp_end_y = self.draw_lvl_exp(self.left_pane_startx + self.left_pane_border_width, pname_end_y)
+        self.draw_lvlup(conf.CAMERA_WIDTH_PIXELS / 2 + self.left_pane_width, 20)
+
+        hp_mp_end_y = self.draw_hp_mp_bars(self.left_pane_startx + self.left_pane_border_width, lvl_exp_end_y)
+
         # Draw equipment
+
+    def draw_pname(self, x, y):
+        name_text = self.font48.render(self.player.name, 1, conf.WHITE)
+        name_text_width = name_text.get_rect().width
+        name_text_spacing = (self.left_pane_width - name_text_width) / 2
+        conf.screen.blit(name_text, (x + name_text_spacing, y + self.y_spacing))
+        pg.draw.rect(conf.screen, conf.SLATE_GREY,
+                     (0, y + self.y_spacing + name_text.get_rect().height + self.y_spacing,
+                      self.left_pane_width, 4), 0)
+        end_y = y + self.y_spacing + name_text.get_rect().height + self.y_spacing + 4
+        return end_y
+
+    def draw_hp_mp_bars(self, x, y):
+        hp_text = conf.FONT_32.render("Health", 1, conf.WHITE)
+        hp_stats = conf.FONT_32.render("{:>5}/{:<5}".format(self.player.health, self.player.max_health), 1, conf.WHITE)
+        conf.screen.blit(hp_text, (x + 5, y + self.y_spacing))
+        conf.screen.blit(hp_stats, (
+            self.left_pane_width - (self.left_pane_border_width + 5 + hp_stats.get_rect().width), y + self.y_spacing))
+        end_y = y + self.y_spacing + hp_text.get_rect().height + self.y_spacing
+        pg.draw.rect(conf.screen, conf.SLATE_GREY,
+                     (0, end_y,
+                      self.left_pane_width, 4), 0)
+        end_y += self.y_spacing + 4
+        draw_health_bar(x + 5, end_y, self.player.health, self.player.max_health,
+                        self.left_pane_width - (x + 10 + 2*self.left_pane_border_width), hp_text.get_rect().height)
+        end_y += hp_text.get_rect().height + self.y_spacing
+        pg.draw.rect(conf.screen, conf.SLATE_GREY,
+                     (0, end_y,
+                      self.left_pane_width, 4), 0)
+        end_y += 4
+
+        mp_text = conf.FONT_32.render("Mana", 1, conf.WHITE)
+        mp_stats = conf.FONT_32.render("{:>5}/{:<5}".format(self.player.mana, self.player.max_mana), 1, conf.WHITE)
+        conf.screen.blit(mp_text, (x + 5, end_y + self.y_spacing))
+        conf.screen.blit(mp_stats, (
+            self.left_pane_width - (self.left_pane_border_width + 5 + mp_stats.get_rect().width), end_y + self.y_spacing))
+        end_y += self.y_spacing + mp_text.get_rect().height + self.y_spacing
+        pg.draw.rect(conf.screen, conf.SLATE_GREY,
+                     (0, end_y,
+                      self.left_pane_width, 4), 0)
+        end_y += self.y_spacing + 4
+        draw_mana_bar(x + 5, end_y, self.player.mana, self.player.max_mana,
+                        self.left_pane_width - (x + 10 + 2 * self.left_pane_border_width), mp_text.get_rect().height)
+        end_y += hp_text.get_rect().height + self.y_spacing
+        pg.draw.rect(conf.screen, conf.SLATE_GREY,
+                     (0, end_y,
+                      self.left_pane_width, 4), 0)
+        end_y += 4
+        return end_y
+
+    def draw_lvl_exp(self, x, y):
+        level_exp_text = self.font32.render("Level {:<5} Exp {:<5}".format(self.player.player_level, self.player.exp), 1,
+                                            conf.WHITE)
+        level_text_width = level_exp_text.get_rect().width
+        level_text_spacing = (self.left_pane_width - level_text_width) / 2
+        conf.screen.blit(level_exp_text,
+                         (x + level_text_spacing, y + self.y_spacing))
+        end_y = y + self.y_spacing + level_exp_text.get_rect().height + self.y_spacing
+        pg.draw.rect(conf.screen, conf.SLATE_GREY,
+                     (0, end_y,
+                      self.left_pane_width, 4), 0)
+        end_y += 4
+        return end_y
+
+    def draw_lvlup(self, x, y):
+        if self.player.last_level_up_time + 5 > time():
+            lvlup_text = self.font48.render("LEVEL UP TO {}!".format(self.player.player_level), 1, conf.GREEN)
+            lvlup_text_width = lvlup_text.get_rect().width
+            conf.screen.blit(lvlup_text, (x - lvlup_text_width/2, y))
+            self.draw_up_arrow(x+lvlup_text_width + 10, y)
+            self.draw_up_arrow(x-(lvlup_text_width + 10), y)
+
+    def draw_up_arrow(self, x, y):
+        pg.draw.polygon(conf.screen, conf.GREEN, ((x, y), (x+20, y+20), (x+10, y+20), (x+10, y+40),
+                                                  (x-10, y+40), (x-10, y+20), (x-20, y+20), (x, y)), 0)
 
     def draw_right_pane(self):
         pg.draw.rect(conf.screen, conf.GREY, (self.right_pane_startx, self.right_pane_starty,

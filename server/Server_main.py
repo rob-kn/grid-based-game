@@ -25,7 +25,8 @@ def get_player():
 
 
 def set_player(p):
-    # TODO lookup by id supplied as argument
+    # TODO lookup by id supplied as argument or send a requent from client to move in a certain position,
+    # server then double checks to see if valid before making changes (to move towards only server changing player)
     global player1
     player1 = p
 
@@ -102,16 +103,22 @@ id_counter += 1
 # Creates 15 randomly places enemies.
 
 # e = Enemy.Enemy(id_counter, 46, 9, "giant_eye")
-for i in range(15):
+for i in range(10):
     x, y = random.randint(0, 80), random.randint(0, 20)
     while not is_tile_walkable(x, y, None):
         x, y = random.randint(0, 80), random.randint(0, 20)
     Enemy.Enemy(id_counter, x, y, "giant_eye")
     id_counter += 1
-# id_counter += 1
+
+for i in range(10):
+    x, y = random.randint(0, 80), random.randint(0, 20)
+    while not is_tile_walkable(x, y, None):
+        x, y = random.randint(0, 80), random.randint(0, 20)
+    Enemy.Enemy(id_counter, x, y, "grey_rat")
+    id_counter += 1
 
 # hk = Item.HealthKit(id_counter, 47, 9)
-for i in range(15):
+for i in range(10):
     x, y = random.randint(0, 80), random.randint(0, 20)
     while not is_tile_walkable(x, y, None):
         x, y = random.randint(0, 80), random.randint(0, 20)

@@ -28,6 +28,8 @@ COMPLETE_GRID = [line.strip() for line in open('maps/level_0_map.txt').readlines
 SCORE = 0
 done = False
 FPS = 60
+
+# Colors
 WHITE = (255, 255, 255)
 SILVER = (192, 192, 192)
 GREY = (64, 64, 64)
@@ -41,7 +43,11 @@ YELLOW = (255, 255, 0)
 pg.init()
 screen = pg.display.set_mode(SCREEN_SIZE)
 clock = pg.time.Clock()
+
+# Fonts
+FONT_48 = pg.font.Font('amatic/Amatic-Bold.ttf', 48)
 FONT_32 = pg.font.Font('amatic/Amatic-Bold.ttf', 32)
+FONT_32_BOLD = pg.font.Font("amatic/Amatic-Bold.ttf", 32)
 FONT_16 = pg.font.Font('amatic/Amatic-Bold.ttf', 16)
 NAMES_FONT = pg.font.Font(None, 16)
 
@@ -66,6 +72,8 @@ deep_troll = pg.transform.scale(deep_troll, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE)
 # Enemies
 giant_eye_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/giant_eyeball.png")
 giant_eye_img = pg.transform.scale(giant_eye_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
+grey_rat_img = pg.image.load("graphics/crawl-tiles Oct-5-2010/dc-mon/animals/grey_rat.png")
+grey_rat_img = pg.transform.scale(grey_rat_img, (GRID_SQUARE_SIZE, GRID_SQUARE_SIZE))
 
 # Items
 health_potion = pg.image.load("graphics/crawl-tiles Oct-5-2010/item/potion/ruby.png")

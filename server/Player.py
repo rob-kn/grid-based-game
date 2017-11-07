@@ -1,6 +1,7 @@
 import configuration as conf
 import server.Sprite as Sprite
 import server.Enemy as Enemy
+from time import time
 
 
 level_boundaries = {
@@ -26,6 +27,7 @@ class Player(Sprite.Sprite):
         self.range = 1
         self.sprite_type = "Player"
         self.player_level = 1
+        self.last_level_up_time = 0
         self.exp = 0
         #self.images = [conf.player_img, conf.player_legs, conf.player_body]
         self.images = [conf.deep_troll]
@@ -37,4 +39,5 @@ class Player(Sprite.Sprite):
         exp_req_for_levelup = level_boundaries[self.player_level + 1]
         if self.exp >= exp_req_for_levelup:
             self.player_level += 1
+            self.last_level_up_time = time()
             print("Leveled up! Now level {}.".format(self.player_level))

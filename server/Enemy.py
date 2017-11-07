@@ -1,16 +1,27 @@
 import configuration as conf
 import server.Sprite as Sprite
 
-enemy_types = {"giant_eye": {
-    "max_health": 100,
-    "attack": 5,
-    "attack_speed": 1,
-    "speed": 1.2,
-    "name": "Giant Eye",
-    "img": conf.giant_eye_img,
-    "exp_to_gain": 3,
-    "range": 1
-}
+enemy_types = {
+    "giant_eye": {
+        "max_health": 100,
+        "attack": 5,
+        "attack_speed": 1,
+        "speed": 1.2,
+        "name": "Giant Eye",
+        "img": conf.giant_eye_img,
+        "exp_to_gain": 5,
+        "range": 1
+    },
+    "grey_rat": {
+        "max_health": 50,
+        "attack": 3,
+        "attack_speed": 2,
+        "speed": 5,
+        "name": "Rat",
+        "img": conf.grey_rat_img,
+        "exp_to_gain": 2,
+        "range": 1
+    }
 }
 
 
