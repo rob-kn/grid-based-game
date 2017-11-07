@@ -7,7 +7,6 @@ from server import Item
 import random
 
 
-
 def is_tile_walkable(x_test, y_test, sprite_id):
     is_walkable = True
     if conf.COMPLETE_GRID[y_test][x_test] != ' ':
@@ -78,7 +77,7 @@ def update_sprites():
             if id_to_remove:
                 ids_to_remove.append(id_to_remove)
     for sprite_id in ids_to_remove:
-        del(Sprite.sprites[sprite_id])
+        del (Sprite.sprites[sprite_id])
 
 
 def get_sprites_around_xy(x_range, y_range):

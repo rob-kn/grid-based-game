@@ -21,6 +21,7 @@ class Sprite:
         self.inventory = []
 
     def attack_sprite(self):
+        # TODO: Change this so it accounts for the sprites current movement.
         target_to_remove = None
         current_time = time()
         if current_time - self.last_attack_time > self.attack_speed:

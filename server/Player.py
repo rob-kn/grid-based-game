@@ -3,7 +3,6 @@ import server.Sprite as Sprite
 import server.Enemy as Enemy
 from time import time
 
-
 level_boundaries = {
     1: 0,
     2: 15,
@@ -29,7 +28,7 @@ class Player(Sprite.Sprite):
         self.player_level = 1
         self.last_level_up_time = 0
         self.exp = 0
-        #self.images = [conf.player_img, conf.player_legs, conf.player_body]
+        # self.images = [conf.player_img, conf.player_legs, conf.player_body]
         self.images = [conf.deep_troll]
         Sprite.sprites[self.sprite_id] = self
 
