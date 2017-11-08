@@ -88,6 +88,7 @@ while not conf.done:
     camera.draw_camera_map(player.x, player.y, player)
     camera.draw_items(items)
     camera.draw_entities(sprites)
+    camera.draw_map_overlay_tiles(player.x, player.y)
     camera.draw_health_and_names(sprites)
     overlay.draw_left_pane(player)
     overlay.draw_right_pane()

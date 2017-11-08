@@ -37,7 +37,22 @@ class Camera:
                 rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
                 tile_images = conf.MAP_0[y][x][1:].split('+')
                 for image_code in tile_images:
-                    conf.screen.blit(conf.tile_code_images[image_code], rect)
+                    if not image_code.startswith('^'):
+                        conf.screen.blit(conf.tile_code_images[image_code], rect)
+
+    def draw_map_overlay_tiles(self, grid_x, grid_y):
+        range_x, range_y = self.get_onscreen_range(grid_x, grid_y)
+        for col_count, y in enumerate(range_y):
+            y_pixel = (col_count - 1) * conf.GRID_SQUARE_SIZE + self.player.offset[1]
+            y_pixel += self.camera_starty
+            for row_count, x in enumerate(range_x):
+                x_pixel = (row_count - 1) * conf.GRID_SQUARE_SIZE + self.player.offset[0]
+                x_pixel += self.camera_startx
+                rect = pg.Rect(x_pixel, y_pixel, conf.GRID_SQUARE_SIZE, conf.GRID_SQUARE_SIZE)
+                tile_images = conf.MAP_0[y][x][1:].split('+')
+                for image_code in tile_images:
+                    if image_code.startswith('^'):
+                        conf.screen.blit(conf.tile_code_images[image_code[1:]], rect)
 
     def draw_items(self, items):
         for item_id, item in items.items():
